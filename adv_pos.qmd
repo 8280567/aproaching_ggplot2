@@ -1,0 +1,69 @@
+# position()
+
+```{r}
+library(tidyverse)
+```
+
+## stack
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position="stack")  
+```
+
+## identity
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position="identity")  
+```
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position="identity",alpha=0.3)  
+```
+
+## dodge
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position="dodge")  
+```
+
+## fill
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position="fill")  
+```
+
+## jitter
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position="jitter")  
+```
+
+## position_dodge2
+
+```{r}
+ggplot(mpg, aes(class, fill = manufacturer))+
+  geom_bar(position=position_dodge2(preserve="single",padding=0.2),width=0.9)  
+```
+
+## 实例
+
+```{r}
+#添加误差线（注：本例只是为了展示效果，没有实际意义）
+mpg2<-filter(mpg,class==c("compact","subcompact"))
+group_ma<-group_by(mpg2,manufacturer,class)
+#detach("package:plyr", unload=TRUE) 
+data_sumr<- summarise(group_ma,n=n(),se=n()/(10*sqrt(n())))
+data_sumr
+```
+
+```{r}
+p<-ggplot(data_sumr, aes(class,n,fill = manufacturer))
+p1<-p+geom_bar(stat="identity",position = position_dodge(width=0.8), width=0.7)
+p1+geom_errorbar(aes(ymin=n-se,ymax=n+se),width=0.2,position = position_dodge(width=0.8))
+```

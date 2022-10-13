@@ -1,0 +1,63 @@
+# aes()
+
+## 映射坐标属性
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(mpg)+
+  aes(x=cty,y=hwy,size=displ,color=class,shape=fl)
+```
+
+```{r}
+ggplot(data=mpg,mapping=aes(x=cty,y=hwy,size=displ,color=class,shape=fl))
+  
+```
+
+## 映射其它属性
+
+```{r}
+p<-ggplot(mpg,aes(x=cty,y=hwy))
+p+geom_point(aes(size=cyl))
+```
+
+```{r}
+p+geom_point(aes(shape=manufacturer))
+```
+
+```{r}
+p+geom_point(aes(color=year))
+```
+
+## 映射的原理
+
+```{r}
+p+geom_point(aes(color=class))
+```
+
+```{r}
+p+geom_point(aes(color="blue"))
+```
+
+```{r}
+p+geom_point(color="blue")
+```
+
+```{r}
+ggplot(mpg,aes(x=cty,y=hwy),color="blue")+
+  geom_point()
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```

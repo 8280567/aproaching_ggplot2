@@ -1,0 +1,421 @@
+## scale()
+
+## 公共参数
+>公共参数name,breaks,labels,limits
+
+### 离散型 例 1
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+p0 <- ggplot(mpg, aes(class))+geom_bar(aes(fill=drv));p0
+```
+
+```{r}
+#更改图例名字 #
+p0 + scale_fill_discrete(name="class") 
+```
+
+```{r}
+# 对应指定并更改图例标签 #
+p0 + scale_fill_discrete (breaks = c("4", "r", "f"), 
+                          labels = c("four", "rr", "rr"))
+```
+
+```{r}
+# 只显示4和r对应部分# 
+p0 + scale_fill_discrete (limits=c("4", "r")) 
+```
+
+```{r}
+# 多出一个分类#
+p0 + scale_fill_discrete (limits=c("4", "r", "f", "6"))
+```
+
+### 离散型 例 2
+
+```{r}
+p1 <- ggplot(mtcars, aes(factor(cyl), mpg)) + geom_point();p1
+```
+
+```{r}
+p1 + scale_x_discrete(name="cyl") 
+```
+
+```{r}
+p1 + scale_x_discrete(labels = c("4"="a","6"="b","8"="c")) 
+```
+
+```{r}
+p1 + scale_x_discrete(labels = letters[1:3],breaks=c("4","6","8")) 
+```
+
+```{r}
+p1 + scale_x_discrete(labels = c("4"="a","6"="b"))
+```
+
+```{r}
+p1 + scale_x_discrete(labels = letters[1:3])
+```
+
+```{r}
+p1 + scale_x_discrete(limits=c("4","6"))
+```
+
+### 连续型 例 1
+
+```{r}
+p2<-ggplot(mpg,aes(displ, hwy , color = cyl))+geom_point();p2
+```
+
+```{r}
+p2 +scale_color_continuous (name="Cyl",
+                            breaks=c(7.5,6.2,4.9),
+                            labels=c("a","b","c"))
+```
+
+```{r}
+p2 +scale_color_continuous (name="CYL",
+                            limits=c(5,6.8))
+```
+
+### 连续型 例 2
+
+```{r}
+p3 <- ggplot(mtcars, aes(factor(cyl), mpg)) + geom_point();p3
+```
+
+```{r}
+p3 + scale_y_continuous("ylab_mpg")
+```
+
+```{r}
+p3 + scale_y_continuous(breaks = c(10,20,30))
+```
+
+```{r}
+p3 + scale_y_continuous(breaks = c(10,20,30), labels=scales::dollar)
+```
+
+```{r}
+p3 + scale_y_continuous(limits = c(10,30))
+```
+
+```{r}
+p3 + scale_y_reverse() # 纵坐标翻转，小数在上面，大数在下面#
+```
+
+```{r}
+p3 + scale_y_log10()
+```
+
+```{r}
+p3 + scale_y_continuous(trans = "log10")
+```
+
+```{r}
+p3 + scale_y_sqrt()
+```
+
+## 更改颜色
+>更改color/fill
+
+### 离散型 例 1
+
+```{r}
+p0 <- ggplot(mpg, aes(class))+geom_bar(aes(fill=drv));p0 
+```
+
+```{r}
+p0 + scale_fill_manual(values=c("red", "blue", "green")) # 直接指定三个颜色# 
+```
+
+```{r}
+p0 + scale_color_hue(h=c(15,100)) #前面使用fill分组，用color系列无效#
+```
+
+```{r}
+p0 + scale_fill_brewer(palette = "Greens",direction = -1)
+```
+
+```{r}
+p0 + scale_fill_grey(start=1, end=0.5)#0为黑，1为白#
+```
+
+### 离散型 例 2
+
+```{r}
+x <- sample(LETTERS,13); y <- 1:13
+x
+```
+
+```{r}
+y
+```
+
+```{r}
+p<-ggplot()+geom_col(data=NULL,aes(x,y,fill=x));p
+```
+
+```{r}
+p+scale_fill_brewer()
+```
+
+```{r}
+p+scale_fill_brewer(palette="YlOrRd")
+```
+
+```{r}
+x<-x[1:8];y<-y[1:8]
+x
+```
+
+```{r}
+y
+```
+
+```{r}
+p<-ggplot()+geom_col(data=NULL,aes(x,y,fill=x));p
+```
+
+```{r}
+p+scale_fill_brewer()
+```
+
+```{r}
+p+scale_fill_brewer(palette="YlOrRd")
+```
+
+### 连续型 例 1
+
+```{r}
+p1<-ggplot(mpg,aes(displ, hwy , color = cyl))+geom_point();p1
+```
+
+```{r}
+p1 + scale_color_gradient2(low = "white", mid = "red", high = "black") 
+```
+
+```{r}
+p1 + scale_color_gradientn(colours = terrain.colors(10))
+```
+
+```{r}
+p1 + scale_color_distiller(palette = "Spectral")
+```
+
+### 连续型 例 2
+
+```{r}
+p<-ggplot(faithfuld, aes(waiting, eruptions)) + geom_raster(aes(fill = density));p
+```
+
+```{r}
+max(faithfuld$density);min(faithfuld$density)  
+```
+
+```{r}
+p + scale_fill_gradient(limits=c(0.001,0.004))   
+```
+
+```{r}
+p + scale_fill_gradient(low = 'blue', high = 'red')
+```
+
+```{r}
+p + scale_fill_gradient2(low = 'blue', high = 'red')  
+```
+
+```{r}
+p + scale_fill_gradient2(low = 'blue', high = 'red', midpoint = 0.02)
+```
+
+```{r}
+p + scale_fill_gradientn(colours = c('black','blue','red','white'))  
+```
+
+```{r}
+p + scale_fill_gradientn(colours = topo.colors(10))  
+```
+
+```{r}
+p + scale_fill_gradientn(colours = terrain.colors(10))  
+```
+
+```{r}
+p + scale_fill_gradientn(colours = heat.colors(10))
+```
+
+```{r}
+p + scale_fill_gradientn(colours = cm.colors(10))
+```
+
+```{r}
+p + scale_fill_distiller(palette = "Spectral")
+```
+
+## scale_color_identity()
+
+```{r}
+pp1<-ggplot(mpg,aes(displ, hwy , color = "blue"))+geom_point();pp1
+```
+
+```{r}
+pp1+scale_color_identity( )
+```
+
+```{r}
+col <- c("red","yellow","blue","black")
+val <- abs(rnorm(4))*10;val
+```
+
+```{r}
+data<-data.frame("col"=col,"val"=val)
+data
+```
+
+```{r}
+pp2<-ggplot(data,aes(x=col,y=val,fill=col))+geom_col();pp2
+```
+
+```{r}
+pp2+scale_fill_identity()
+```
+
+## scale_shape_**()
+
+```{r}
+df_shapes <- data.frame(shape = 0:24)
+df_shapes
+```
+
+```{r}
+ggplot(df_shapes, aes(0, 0, shape = shape)) +
+  geom_point(aes(shape = shape), size = 5, fill = 'red') +
+  scale_shape_identity() +
+  facet_wrap(~shape)
+```
+
+```{r}
+p<-ggplot(mpg)+
+   geom_point(aes(cty, hwy, shape = manufacturer));p
+```
+
+```{r}
+p+ scale_shape_manual(values=seq(1,15,1))
+```
+
+## scale_linetype_**()
+
+```{r}
+df_lines <- data.frame(
+    linetype = factor(
+        1:4,
+        labels = c("solid", "longdash", "dashed", "dotted")
+    )
+)
+df_lines
+```
+
+```{r}
+ggplot(df_lines) +
+    geom_hline(aes(linetype = linetype, yintercept = 0), size = 2) +
+    scale_linetype_identity() +
+    facet_grid(linetype ~ .) 
+```
+
+```{r}
+df_lines <- data.frame(
+    linetype = factor(
+        1:13,
+        labels = as.character(seq(0,12,1))
+    )
+)
+ggplot(df_lines) +
+    geom_hline(aes(linetype = linetype, yintercept = 0), size = 2) +
+    facet_grid(linetype ~ .) 
+```
+
+## scale_size_**()
+
+```{r}
+p<-ggplot(mpg)+
+   geom_point(aes(displ, hwy, size = hwy),alpha=0.2);p
+```
+
+```{r}
+p+ scale_size()
+```
+
+```{r}
+p+scale_size(range=c(0,10))
+```
+
+```{r}
+p+scale_size_area(max_size=10)
+```
+
+```{r}
+p+scale_radius(range=c(0,10))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

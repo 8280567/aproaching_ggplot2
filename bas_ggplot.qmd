@@ -1,0 +1,23 @@
+# ggplot()
+
+```{r}
+library(ggplot2)
+```
+
+## 查看示例数据
+```{r}
+mpg
+```
+
+## 查看数据的结构
+```{r}
+str(mpg)
+```
+
+## 创建并保存空白图形
+
+```{r}
+ggplot(mpg)
+ggsave("c:/a.jpg",dpi=300)
+```
+

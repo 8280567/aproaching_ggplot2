@@ -1,0 +1,79 @@
+# annotate()
+
+## annotate
+
+```{r}
+library(ggplot2)
+ggplot(mpg,aes(displ, hwy , color = cyl)) + geom_point()
+```
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
+  annotate("rect",xmin=4.5,xmax=7.1,ymin=0,ymax=27,color="red",alpha=0.3,size=2)
+  
+```
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
+  annotate("segment",x=2.5,y=20,xend=3,yend=35,color="blue",size=10,alpha=0.1)
+  
+```
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
+  annotate("segment",x=2.5,y=20,xend=3,yend=35,color="blue",
+           arrow=arrow(end="last",angle=30,length=unit(1,"cm")))
+```
+
+## geom_text
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + geom_point()
+```
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
+  geom_text(label="TEST",color="red")
+```
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
+  geom_text(x=4,y=40,label="TEST",color="red",alpha=0.1)
+```
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
+  geom_text(label="TEST",color="red",vjust=0.3,hjust=-0.2)
+```
+
+## 实例
+
+```{r}
+library(plyr)
+library(tidyverse)
+lm_labels <- function(dat) {
+    mod <- lm(hwy ~ displ, data=dat)
+    formula <- sprintf("italic(y) == %.2f %+.2f * italic(x) ",  round(coef(mod)[1], 2), round(coef(mod)[2], 2))
+    r <- cor(dat$displ, dat$hwy)
+    r2 <- sprintf("italic(R^2) == %.2f", r^2)
+    data.frame(formula=formula, r2=r2, stringsAsFactors=FALSE)}
+
+labels<-ddply(mpg,"cyl",lm_labels);labels[2,]<-c("5","数据个数太少","无法拟合")
+labels
+```
+
+```{r}
+
+ggplot(mpg,aes(displ,hwy))+ 
+  geom_point()+
+  facet_grid(cyl~.)+
+  geom_smooth(se=FALSE,method="lm")+
+  geom_text(x=5,y=40,aes(label=formula),data=labels,parse=TRUE,vjust=0)+
+  geom_text(x=5,y=35,aes(label=r2),data=labels,parse=TRUE,vjust=-0.1)
+```

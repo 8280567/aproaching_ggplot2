@@ -1,0 +1,46 @@
+project:
+  type: book
+  output-dir: docs
+  preview:
+    port: 4000
+  
+book:
+  title: "Approaching ggplot2"
+  author: "Xh Fan"
+  date: "2022/10/11"
+  chapters:
+    - index.qmd
+    - part: bas.qmd
+      chapters:
+        - bas_ggplot.qmd
+        - bas_aes.qmd
+        - bas_geom.qmd
+        - bas_stat.qmd
+        - bas_coord.qmd
+        - bas_facet.qmd
+        - bas_exam.qmd
+    - part: adv.qmd
+      chapters: 
+        - adv_pos.qmd
+        - adv_text.qmd
+        - adv_scale.qmd
+        - adv_guide.qmd
+        - adv_facet.qmd
+        - adv_coord.qmd
+        - adv_theme.qmd
+        - adv_multi_plot.qmd
+        - adv_exam.qmd
+    - part: ex.qmd
+      chapters: 
+        - ex_ncov2019.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    cover-image: cover.png
+    code-link: true
+editor: visual
+

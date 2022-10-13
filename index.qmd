@@ -1,0 +1,50 @@
+## Preface {.unnumbered}
+
+The ggplot2 cookbook was formatted using the Quarto Document in Rstudio. To learn more about Quarto books visit <https://quarto.org/docs/books>.
+
+I assume you have already installed R (https://www.r-project.org) (R Core Team 2022) and the RStudio IDE (https://www.rstudio.com).
+
+Next you can install the **rmarkdown** package in R:
+
+```{r}
+## Install from CRAN
+#install.packages('rmarkdown')
+
+## Or if you want to test the development version,
+## install from GitHub
+# if (!requireNamespace("remotes"))
+#   install.packages('remotes')
+# remotes::install_github('rstudio/rmarkdown')
+```
+
+If you want to generate PDF output, you will need to install LaTeX. For R Markdown users who have not installed LaTeX before, we recommend that you install [TinyTeX](https://yihui.name/tinytex/ "https://yihui.name/tinytex/") :
+
+```{r}
+# install.packages('tinytex')
+# tinytex::install_tinytex()  # install TinyTeX
+```
+
+## 所需程序包
+
+| 程序包       | 安装方法                                                          |
+|:-----------------------------------|:-----------------------------------|
+| tidyverse    | install.packages("tidyverse")                                     |
+| plyr         | install.packages("plyr")                                          |
+| ggthemes     | install.packages("ggthemes")                                      |
+| ggthemr      | install.packages("ggthemr")                                       |
+| ggsci        | install.packages("ggsci")                                         |
+| ggtech       | devtools::install_github("ricardo-bion/ggtech",dependencies=TRUE) |
+| ggplotAssist | install.packages("ggplotAssist")                                  |
+| ggplotgui    | install.packages("ggplotgui")                                     |
+| ggpubr       | install.packages("ggpubr")                                        |
+| easyGgplot2  | devtools::install_github("kassambara/easyGgplot2")                |
+| gridExtra    | install.packages("gridExtra")                                     |
+| ggplot2      | devtools::install_github("hadley/ggplot2")                        |
+
+## 参考资料推荐
+
+[ggplot2:Elegant Graphics for Data Analysis](http://www.springer.com/us/book/9783319242750)
+
+[R Graphics Cookbook](http://www.it-ebooks.info/book/1316/)
+
+[ggplot2作图函数参考网址](http://ggplot2.tidyverse.org/reference)

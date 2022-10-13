@@ -1,0 +1,68 @@
+# ncov2019
+
+```{r}
+#| warning: false
+#| message: false
+remotes::install_github("GuangchuangYu/nCov2019")
+remotes::install_github("GuangchuangYu/chinamap")
+
+```
+
+## 全球疫情形势
+
+```{r}
+library(nCov2019)
+library(tidyverse)
+
+y = load_nCov2019(lang='zh')# 可改为en
+d = y['global']
+
+dd <- filter(d, time == time(y) & country != '中国') %>% 
+  arrange(desc(cum_confirm)) 
+
+dd = dd[1:40, ]
+dd$country = factor(dd$country, levels=dd$country)
+dd$angle = 1:40 * 360/40
+i = dd$angle > 90 & dd$cum_confirm > dd$cum_confirm[21]
+dd$angle[i] = dd$angle[i] + 180
+dd$vjust = 1
+dd$vjust[i] = 0
+
+as_tibble(dd)
+
+
+data100_plus<-function(d) d[d$cum_confirm > dd$cum_confirm[21],]
+data100_minus<-function(d) d[d$cum_confirm < dd$cum_confirm[21],]
+```
+
+```{r}
+#| fig-cap: "全球疫情形势"
+#| code-fold: true
+#| fig-height: 10
+windowsFonts(jianti=windowsFont("dengxian"))
+p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
+  geom_col(width=1, color='grey90') + 
+  geom_col(aes(y=I(5)), width=1, fill='grey90', alpha = .2) +       
+  geom_col(aes(y=I(3)), width=1, fill='grey90', alpha = .2) +    
+  geom_col(aes(y=I(2)), width=1, fill = "white") +
+  scale_y_log10() + 
+  #scale_fill_gradientn(colors=c("darkgreen", "green", "orange", "firebrick","red"), trans="log") + 
+  scale_fill_gradientn(colors=c("#57868c","#39bc5c","#c5da27","#eda027","#da400c","#c90d47"),
+                       trans="log")+
+  geom_text(aes(label=paste(country, cum_confirm, sep="\n"),
+                y = cum_confirm *.8, angle=angle, vjust=vjust),
+            data= data100_plus(dd),
+            size=3, color = "white", fontface="bold",family="jianti")  +
+  geom_text(aes(label=paste0(cum_confirm, "例 ", country), 
+                y = cum_confirm * 2, angle=angle+90), 
+            data= data100_minus(dd), 
+            size=3, vjust=0,fontface="bold",family="jianti") +
+  coord_polar(direction=-1) + 
+  theme_void() + 
+  theme(legend.position="none")
+
+ggplotify::as.ggplot(p, scale=1.25, vjust=-.05, hjust=0)
+
+```
+
+## 

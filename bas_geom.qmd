@@ -1,0 +1,56 @@
+# geom()
+
+## geom_point()
+
+```{r}
+library(plyr)
+library(tidyverse)
+ggplot(mpg, aes(cty, hwy))+geom_point() 
+```
+
+## geom_smooth()
+
+```{r}
+ggplot(mpg, aes(cty, hwy))+geom_smooth() 
+```
+
+
+## geom_bar()
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot()+geom_bar(data=mpg,mapping=aes(manufacturer))
+```
+
+```{r}
+ggplot()+geom_bar(data=mpg,mapping=aes(class))
+```
+
+## geom_line()
+
+```{r}
+df <- data.frame(x = 1:10, y = c(4, 1, 9, 5, 8, 7, 3, 8, 3, 5))
+df
+ggplot(df, aes(x, y))+
+  geom_line(size = 10)
+
+ggplot(df, aes(x, y))+
+  geom_step(size = 10)
+```
+
+## 实例
+
+```{r}
+group_cyl<-group_by(mpg,cyl)
+data_sumr<- summarise(group_cyl,avg=mean(hwy),se=sd(hwy)/sqrt(n()))
+data_sumr
+```
+
+```{r}
+p<-ggplot(data_sumr,aes(cyl, avg)) + geom_line()+geom_point(size=4) 
+p+geom_errorbar(aes(ymin=avg-se, ymax=avg+se), width=0.1)
+```
+

@@ -1,0 +1,34 @@
+# facet()
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+p<-ggplot(mpg)+aes(cty,hwy)+geom_point()+geom_smooth();p
+```
+
+```{r}
+p+facet_grid(.~drv)
+```
+
+```{r}
+p<-ggplot(mpg)+aes(cty,hwy)+geom_point()+geom_smooth()+coord_polar(theta = "y");p
+```
+
+```{r}
+p+facet_grid(.~drv)
+```
+
+```{r}
+ggplot(mpg)+
+  geom_point(aes(cty,hwy,color=class,shape=as.factor(cyl)))+
+  facet_wrap(~class)
+```
+
+```{r}
+ggplot(mpg,aes(cty,hwy,color=class))+
+  geom_smooth(method="lm",color="grey",size=4)+ 
+  geom_point(size=3)+
+  facet_wrap(~class)
+```

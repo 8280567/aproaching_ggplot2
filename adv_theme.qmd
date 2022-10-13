@@ -1,0 +1,470 @@
+# theme()
+
+## 自带主题包
+
+```{r}
+library(tidyverse)
+library(ggthemr)
+library(ggthemes)
+library(ggsci)
+library(ggpubr)
+```
+
+```{r}
+p<-ggplot(mpg, aes(class,color=drv,fill=drv)) +geom_bar() 
+p+theme_grey()
+```
+
+```{r}
+p+theme_bw()
+```
+
+```{r}
+p+theme_linedraw()
+```
+
+```{r}
+p+theme_light()
+```
+
+```{r}
+p+theme_dark()
+```
+
+```{r}
+p+theme_minimal()
+```
+
+```{r}
+p+theme_classic()
+```
+
+## ggthemes
+
+```{r}
+p<-ggplot(mpg, aes(class,color=drv,fill=drv)) +geom_bar() 
+p+theme_base()
+```
+
+```{r}
+p+theme_calc()
+```
+
+```{r}
+p+theme_economist()
+```
+
+```{r}
+p+theme_excel()
+```
+
+```{r}
+p+theme_few()
+```
+
+```{r}
+p+theme_fivethirtyeight()
+```
+
+```{r}
+p+theme_gdocs()
+```
+
+```{r}
+p+theme_hc()
+```
+
+```{r}
+p+theme_par()
+```
+
+```{r}
+p+theme_pander()
+```
+
+```{r}
+p+theme_solarized()
+```
+
+```{r}
+p+theme_stata()
+```
+
+```{r}
+p+theme_tufte()
+```
+
+```{r}
+p+theme_wsj()
+```
+
+## ggthemr
+
+> remotes::install_github('Mikata-Project/ggthemr')
+
+```{r}
+ggthemr('flat')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('flat dark')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('camouflage')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('chalk')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('copper')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('dust')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('earth')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('fresh')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('grape')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('grass')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('greyscale')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('light')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('lilac')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('pale')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('sea')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('sky')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+```{r}
+ggthemr('solarized')
+ggplot(mpg, aes(class,color=drv)) +geom_bar()
+ggthemr_reset()
+```
+
+## ggsci
+
+> 详见：https://ggsci.net/articles/ggsci.html
+
+```{r}
+data("diamonds")
+p1 = ggplot(subset(diamonds, carat >= 2.2),
+       aes(x = table, y = price, colour = cut)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "loess", alpha = 0.05, size = 1, span = 1) +
+  theme_bw()
+p1+scale_color_npg()
+```
+
+## 元素调整函数
+
+```{r}
+plot <- ggplot(mpg, aes(displ, hwy)) + geom_point()
+plot + theme(
+  panel.background = element_blank(),
+  axis.text = element_text(colour = "red"),
+  axis.line = element_line(arrow = arrow()),
+  plot.background = element_rect(fill = "white")
+)
+```
+
+## 主题中其它元素调整
+
+```{r}
+p<-ggplot(mpg,aes(drv, fill = class)) + geom_bar()
+p+theme(legend.justification=c("right", "top"))
+```
+
+```{r}
+p+theme(legend.box.background = element_rect(),
+        legend.box.margin = margin(6, 6, 6, 6))
+```
+
+```{r}
+p+theme(legend.key = element_rect(fill = "white",colour = "black",
+                                  size=0.8,linetype=3))
+```
+
+```{r}
+p+theme(legend.position=c(0.9,0.8))
+```
+
+## ggpubr
+
+> http://www.alboukadel.com/
+
+### 模拟数据
+
+```{r}
+set.seed(1234) 
+wdata <- data.frame(
+sex = factor(rep(c("F", "M"), each=200)), 
+weight = c(rnorm(200, 55), rnorm(200, 58)))
+
+```
+
+### ggdensity
+
+```{r}
+ggdensity(wdata, x = "weight", add = "mean", rug = TRUE, 
+          color = "sex", fill = "sex", palette = c("#00AFBB", "#E7B800"))
+
+```
+
+### gghistogram
+
+```{r}
+gghistogram(wdata, x = "weight", add = "mean", rug = TRUE, 
+            color = "sex", fill = "sex", palette = c("#00AFBB", "#E7B800"))
+
+```
+
+### gghistogram
+
+```{r}
+gghistogram(wdata, x = "weight", add = "mean", rug = TRUE, 
+            fill = "sex", palette = c("#00AFBB", "#E7B800"), 
+            add_density = TRUE)
+
+```
+
+### ggbarplot
+
+```{r}
+ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se", 
+          label = TRUE, lab.vjust = -1.9)
+ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se",
+          error.plot = "upper_errorbar")
+ggbarplot(ToothGrowth, x = "dose", y = "len", add = c("mean_se", "dotplot"))
+
+```
+
+```{r}
+data("mtcars") 
+df2 <- mtcars 
+df2$cyl <- factor(df2$cyl) 
+df2$name <- rownames(df2)
+ggbarplot(df2, x="name", y="mpg", fill = "cyl", 
+          color = "white", palette = "jco", sort.val = "desc",
+          sort.by.groups=FALSE,x.text.angle=60)
+
+```
+
+```{r}
+df2$mpg_z <- (df2$mpg-mean(df2$mpg))/sd(df2$mpg)
+df2$mpg_grp <- factor(ifelse(df2$mpg_z<0, "low", "high"), levels = c("low", "high"))
+ggbarplot(df2, x="name", y="mpg_z", fill = "mpg_grp", 
+          color = "white", palette = "jco", sort.val = "asc", 
+          sort.by.groups = FALSE, x.text.angle=60, ylab = "MPG z-score", 
+          xlab = FALSE, legend.title="MPG Group")
+
+```
+
+```{r}
+ggbarplot(df2, x="name", y="mpg_z", fill = "mpg_grp", 
+          color = "white", palette = "jco", sort.val = "desc", 
+          sort.by.groups = FALSE, x.text.angle=90, ylab = "MPG z-score", 
+          xlab = FALSE, legend.title="MPG Group", 
+          rotate=TRUE, ggtheme = theme_minimal())
+```
+
+
+### ggboxplot
+
+```{r}
+ggboxplot(ToothGrowth, x="dose", y="len", color = "dose", 
+          palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+          add = "jitter", shape="dose")
+```
+
+```{r}
+df<-ToothGrowth
+
+ggboxplot(df, x = "dose", y = "len", width = 0.8)
+ggboxplot(df, "dose", "len", orientation = "horizontal")
+ggboxplot(df, x = "dose", y = "len", notch = TRUE)
+ggboxplot(df, x = "dose", y = "len", add = "dotplot")
+
+```
+
+```{r}
+my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") ) 
+ggboxplot(ToothGrowth, x = "dose", y = "len", color = "dose")+
+  stat_compare_means(comparisons = my_comparisons, 
+                     label.y = c(29, 35, 40))+ 
+  stat_compare_means(label.y = 45)
+
+```
+
+### ggpie
+
+```{r}
+df <- data.frame(group = c("Male", "Female", "Child"), 
+                 value = c(25, 25, 50))
+labs <- paste0(df$group, " (", df$value, "%)")
+ggpie(df, "value", label = labs, fill = "group", 
+      color = "white", palette = c("#00AFBB", "#E7B800", "#FC4E07"))
+ggpie(df, "value", label = labs, lab.pos = "in", 
+      lab.font = "white", fill = "group", color = "white", 
+      palette = c("#00AFBB", "#E7B800", "#FC4E07"))
+
+```
+
+### ggscatter
+
+```{r}
+data("mtcars") 
+df <- mtcars; df$cyl <- as.factor(df$cyl)
+ggscatter(df, x = "wt", y = "mpg", color = "cyl", 
+          add = "reg.line", conf.int = TRUE)+
+  stat_cor(aes(color = cyl), label.x = 3)
+
+```
+
+```{r}
+ggscatter(df, x = "wt", y = "mpg", color = "cyl", shape = "cyl", 
+          palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+          ellipse = TRUE, mean.point = TRUE, star.plot = TRUE)
+
+```
+
+### ggpaired
+
+```{r}
+ggpaired(ToothGrowth, x = "supp", y = "len", color = "supp", 
+         line.color = "gray", line.size = 0.4)
+
+```
+
+```{r}
+ggpaired(ToothGrowth, x = "supp", y = "len", color = "supp", 
+         line.color = "gray", line.size = 0.4)+ 
+  stat_compare_means(paired = TRUE)
+
+```
+
+### ggviolin
+
+```{r}
+ggviolin(ToothGrowth, x="dose", y="len", fill = "dose", 
+         palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+         add = "boxplot", add.params = list(fill="white"))+ 
+  stat_compare_means(comparisons = my_comparisons, label = "p.signif")+
+  stat_compare_means(label.y = 50)
+
+```
+
+### ggdotchart
+
+```{r}
+ggdotchart(df2, x="name", y="mpg", color = "cyl", 
+           palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+           sorting = "ascending", add = "segments", ggtheme = theme_pubr())
+
+```
+
+```{r}
+ggdotchart(df2, x="name", y="mpg", color = "cyl", 
+           palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+           sorting = "descending", add = "segments", rotate = TRUE, 
+           group = "cyl", dot.size = 6, label = round(df2$mpg), 
+           font.label = list(color="white", size=9, vjust=0.5), 
+           ggtheme = theme_pubr())
+
+```
+
+```{r}
+ggdotchart(df2, x = "name", y = "mpg_z",  color = "cyl",     
+           palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+           sorting = "descending",  add = "segments", 
+           add.params = list(color = "lightgray", size = 2), 
+           group = "cyl", dot.size = 6,                                 
+           label = round(df2$mpg_z,1),                        
+           font.label = list(color = "white", size = 9, 
+                             vjust = 0.5),               
+           ggtheme = theme_pubr())+
+  geom_hline(yintercept = 0, linetype = 2, color = "lightgray")
+
+```
+
+```{r}
+ggdotchart(df2, x="name", y="mpg", color = "cyl", 
+           palette = c("#00AFBB", "#E7B800", "#FC4E07"), 
+           sorting = "descending", rotate = TRUE, dot.size = 2, y.text.col=TRUE, 
+           ggtheme = theme_pubr())+ 
+  theme_cleveland()
+
+```
+
+
+
+
+
+
+
+
+
+
+

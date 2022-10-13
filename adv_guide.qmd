@@ -1,0 +1,171 @@
+# guides()
+>guides(); guide_colorbar(); guide_legend()
+
+```{r}
+library(tidyverse)
+```
+
+## scale_*_* VS guides()
+
+```{r}
+df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
+p1 <- ggplot(df, aes(X1, X2)) + geom_tile(aes(fill = value));p1
+```
+
+```{r}
+p1 + scale_fill_continuous(guide = "legend")
+```
+
+```{r}
+p1 + scale_fill_continuous(guide = guide_legend())
+```
+
+```{r}
+p1 + scale_fill_continuous(guide = guide_legend(title=NULL))
+```
+
+```{r}
+p1+guides(fill = "legend")
+```
+
+```{r}
+p1+guides(fill = guide_legend())
+```
+
+```{r}
+p1+guides(fill = guide_colorbar(title = NULL))
+```
+
+```{r}
+p2<-p1 + guides(fill =  guide_legend( title = "LEFT", 
+                                  title.position = "left",
+                                  title.theme = element_text( size = 15,
+                                                              face = "italic",
+                                                              colour = "red",
+                                                              angle = 0
+                                                            ),
+                                  label.position = "bottom",
+                                  label.hjust = 0.5,
+                                  label.vjust = 1,
+                                  label.theme = element_text(angle = 90),
+                                  direction = "horizontal",
+                                  keywidth = 3, 
+                                  keyheight = 1,
+                                  nrow=2,
+                                  byrow=TRUE
+                               )
+            );p2
+```
+
+```{r}
+p3<-p1 + guides(fill =  guide_colorbar( title = "LEFT", 
+                                  title.position = "left",
+                                  title.theme = element_text( size = 15,
+                                                              face = "italic",
+                                                              colour = "red",
+                                                              angle = 0
+                                                            ),
+                                  label.position = "bottom",
+                                  label.hjust = 0.5,
+                                  label.vjust = 1,
+                                  label.theme = element_text(angle = 90),
+                                  direction = "horizontal",
+                                  barwidth = 10, barheight = 10,
+                                  nbin = 100,
+                                  draw.ulim = FALSE, 
+                                  draw.llim = FALSE,
+                                  ticks=TRUE
+                                  )
+            );p3
+```
+
+```{r}
+p2+theme(legend.position="top")
+```
+
+```{r}
+p3+theme(legend.position = c(0.3,0.5))
+```
+
+## colorbar VS legend
+
+```{r}
+mydata <- data.frame(  x = runif(100,0,100),  
+                        y = runif(100,0,100),  
+                        z = runif(100,0,100),  
+                        f = runif(100,0,100),  
+                        g = rep(LETTERS[1:5],each = 20))
+p <- ggplot(mydata,aes(x,y))+  geom_point(aes(fill = z,size = f ),shape = 21);p
+```
+
+```{r}
+colorbar = guide_colorbar(  title = 'Colorbar',  
+                            title.position = 'left',  #left,right,top,bottom  
+                            title.theme = element_text(size = 15,face = "italic",colour = "red",angle = 45),  
+                            title.hjust =  .5,  
+                            title.vjust =  0,  
+                            label = TRUE,  
+                            label.position = 'top',  
+                            label.theme = element_text(size = 15,face = "italic",colour = "red",angle = 45),  
+                            label.hjust = .5,  
+                            label.vjust = .5,  
+                            barwidth = unit(6,"cm"),  #Default value is legend.key.width or legend.key.size  
+                            barheight = unit(1.2,"cm"),  #Default value is legend.key.height or legend.key.size  
+                            nbin = 20,  
+                            ticks = TRUE,  
+                            draw.ulim = TRUE,  
+                            draw.llim = TRUE,  
+                            direction = "horizontal",  #"horizontal" or "vertical."  
+                            reverse = TRUE,  
+                            order = 1)
+size_legend = guide_legend(  title = 'legend',  
+                             title.position = "left",  
+                             title.hjust =  .5,  
+                             title.vjust = .5,  
+                             title.theme = element_text(size = 15,face = "italic",colour = "red",angle = 45),  
+                             keywidth = 2.5,  
+                             keyheight = 2,  
+                             label.position = "bottom",  
+                             direction = "horizontal",  
+                             label = TRUE,  
+                             label.hjust = 0.5,  
+                             label.vjust = 0.5,  
+                             label.theme = element_text(size = 15,face = "italic",colour = "red",angle = 45),  
+                             nrow = 2,  
+                             byrow = TRUE,  
+                             reverse = TRUE,  
+                             order = 2)
+p + scale_fill_gradient(breaks = seq(0,100,10)) +  
+    scale_size_area(breaks = seq(0,100,10))  +  
+    guides(fill = colorbar,size = size_legend)
+```
+
+```{r}
+p+scale_fill_gradient(breaks=seq(0,100,10),guide=colorbar)+
+  scale_size_area(breaks = seq(0,100,10),guide=size_legend)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Approaching ggplot2 - 16&nbsp; Example</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ex.html" rel="next">
+<link href="./adv_multi_plot.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">
+<span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Example</span>
+</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Approaching ggplot2</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./bas.html" class="sidebar-item-text sidebar-link">■ Basic</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_ggplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">ggplot()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_aes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">aes()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_geom.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">geom()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_stat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">stat()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_coord.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">coord()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_facet.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">facet()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bas_exam.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Example</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./adv.html" class="sidebar-item-text sidebar-link">■ Advanced</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_pos.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">position()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_text.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">annotate()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_scale.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">scale()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_guide.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">guides()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_facet.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">facet()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_coord.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">coord()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_theme.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">theme()</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_multi_plot.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">multiplot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adv_exam.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Example</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./ex.html" class="sidebar-item-text sidebar-link">■ Practical</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ex_ncov2019.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">ncov2019</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#%E7%94%BB%E6%88%BF%E5%AD%90" id="toc-画房子" class="nav-link active" data-scroll-target="#%E7%94%BB%E6%88%BF%E5%AD%90"><span class="toc-section-number">16.1</span>  画房子</a>
+  <ul class="collapse">
+<li><a href="#%E6%96%B9%E6%B3%95-1" id="toc-方法-1" class="nav-link" data-scroll-target="#%E6%96%B9%E6%B3%95-1"><span class="toc-section-number">16.1.1</span>  方法 1</a></li>
+  <li><a href="#%E6%96%B9%E6%B3%95-2" id="toc-方法-2" class="nav-link" data-scroll-target="#%E6%96%B9%E6%B3%95-2"><span class="toc-section-number">16.1.2</span>  方法 2</a></li>
+  <li><a href="#%E6%96%B9%E6%B3%95-3" id="toc-方法-3" class="nav-link" data-scroll-target="#%E6%96%B9%E6%B3%95-3"><span class="toc-section-number">16.1.3</span>  方法 3</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#%E7%A8%8B%E5%BA%8F%E5%8C%85%E4%B8%8B%E8%BD%BD%E9%87%8F%E6%97%B6%E5%BA%8F%E5%9B%BE" id="toc-程序包下载量时序图" class="nav-link" data-scroll-target="#%E7%A8%8B%E5%BA%8F%E5%8C%85%E4%B8%8B%E8%BD%BD%E9%87%8F%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="toc-section-number">16.2</span>  程序包下载量时序图</a>
+  <ul class="collapse">
+<li><a href="#tidyverse%E4%B8%8B%E8%BD%BD%E9%87%8F" id="toc-tidyverse下载量" class="nav-link" data-scroll-target="#tidyverse%E4%B8%8B%E8%BD%BD%E9%87%8F"><span class="toc-section-number">16.2.1</span>  tidyverse下载量</a></li>
+  <li><a href="#%E5%85%B6%E5%AE%83%E5%8C%85%E4%B8%8B%E8%BD%BD%E9%87%8F" id="toc-其它包下载量" class="nav-link" data-scroll-target="#%E5%85%B6%E5%AE%83%E5%8C%85%E4%B8%8B%E8%BD%BD%E9%87%8F"><span class="toc-section-number">16.2.2</span>  其它包下载量</a></li>
+  <li><a href="#%E8%BF%87%E5%8E%BB%E4%B8%80%E5%B9%B4%E7%9A%84%E4%B8%8B%E8%BD%BD%E9%87%8F" id="toc-过去一年的下载量" class="nav-link" data-scroll-target="#%E8%BF%87%E5%8E%BB%E4%B8%80%E5%B9%B4%E7%9A%84%E4%B8%8B%E8%BD%BD%E9%87%8F"><span class="toc-section-number">16.2.3</span>  过去一年的下载量</a></li>
+  </ul>
+</li>
+  <li><a href="#kaggle%E4%B8%BB%E8%A6%81%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%AF%94" id="toc-kaggle主要工具使用比" class="nav-link" data-scroll-target="#kaggle%E4%B8%BB%E8%A6%81%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%AF%94"><span class="toc-section-number">16.3</span>  kaggle主要工具使用比</a></li>
+  <li>
+<a href="#%E7%94%B3%E8%AF%B7%E5%9F%BA%E9%87%91%E4%B8%8E%E5%B9%B4%E9%BE%84%E7%9A%84%E5%85%B3%E7%B3%BB" id="toc-申请基金与年龄的关系" class="nav-link" data-scroll-target="#%E7%94%B3%E8%AF%B7%E5%9F%BA%E9%87%91%E4%B8%8E%E5%B9%B4%E9%BE%84%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-section-number">16.4</span>  申请基金与年龄的关系</a>
+  <ul class="collapse">
+<li><a href="#%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%E6%88%90%E5%8A%9F%E6%AC%A1%E6%95%B0" id="toc-不同阶段成功次数" class="nav-link" data-scroll-target="#%E4%B8%8D%E5%90%8C%E9%98%B6%E6%AE%B5%E6%88%90%E5%8A%9F%E6%AC%A1%E6%95%B0"><span class="toc-section-number">16.4.1</span>  不同阶段成功次数</a></li>
+  <li><a href="#%E5%B9%B4%E9%BE%84%E6%AE%B5%E4%B8%8E%E6%9C%80%E5%A4%A7%E5%91%BD%E4%B8%AD%E7%8E%87" id="toc-年龄段与最大命中率" class="nav-link" data-scroll-target="#%E5%B9%B4%E9%BE%84%E6%AE%B5%E4%B8%8E%E6%9C%80%E5%A4%A7%E5%91%BD%E4%B8%AD%E7%8E%87"><span class="toc-section-number">16.4.2</span>  年龄段与最大命中率</a></li>
+  <li><a href="#%E5%B9%B4%E9%BE%84%E6%AE%B5%E6%AC%A1%E6%95%B0%E5%92%8C%E6%A6%82%E7%8E%87" id="toc-年龄段次数和概率" class="nav-link" data-scroll-target="#%E5%B9%B4%E9%BE%84%E6%AE%B5%E6%AC%A1%E6%95%B0%E5%92%8C%E6%A6%82%E7%8E%87"><span class="toc-section-number">16.4.3</span>  年龄段次数和概率</a></li>
+  </ul>
+</li>
+  <li><a href="#%E7%9B%B8%E5%85%B3%E7%9F%A9%E9%98%B5" id="toc-相关矩阵" class="nav-link" data-scroll-target="#%E7%9B%B8%E5%85%B3%E7%9F%A9%E9%98%B5"><span class="toc-section-number">16.5</span>  相关矩阵</a></li>
+  <li><a href="#%E8%AF%BB%E5%8F%96shp%E6%96%87%E4%BB%B6" id="toc-读取shp文件" class="nav-link" data-scroll-target="#%E8%AF%BB%E5%8F%96shp%E6%96%87%E4%BB%B6"><span class="toc-section-number">16.6</span>  读取shp文件</a></li>
+  <li><a href="#%E7%AD%89%E5%80%BC%E7%BA%BF%E5%9B%BE" id="toc-等值线图" class="nav-link" data-scroll-target="#%E7%AD%89%E5%80%BC%E7%BA%BF%E5%9B%BE"><span class="toc-section-number">16.7</span>  等值线图</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">
+<span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Example</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><section id="画房子" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="画房子">
+<span class="header-section-number">16.1</span> 画房子</h2>
+<section id="方法-1" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="方法-1">
+<span class="header-section-number">16.1.1</span> 方法 1</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,breaks<span class="op">=</span><span class="cn">NULL</span>,label<span class="op">=</span><span class="cn">NULL</span>,limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,breaks<span class="op">=</span><span class="cn">NULL</span>,label<span class="op">=</span><span class="cn">NULL</span>,limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">200</span>,<span class="fl">700</span>,<span class="fl">700</span>,<span class="fl">200</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">50</span>,<span class="fl">600</span>,<span class="fl">600</span><span class="op">)</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"brown"</span>,color<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">450</span>,<span class="fl">850</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">600</span>,<span class="fl">830</span>,<span class="fl">600</span><span class="op">)</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"black"</span>,fill<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">300</span>,<span class="fl">450</span>,<span class="fl">450</span>,<span class="fl">300</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">50</span>,<span class="fl">350</span>,<span class="fl">350</span><span class="op">)</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"orange"</span>,color<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">375</span>,<span class="fl">380</span>,<span class="fl">380</span>,<span class="fl">375</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">50</span>,<span class="fl">350</span>,<span class="fl">350</span><span class="op">)</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">355</span>,<span class="fl">400</span>,<span class="fl">400</span>,<span class="fl">355</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">200</span>,<span class="fl">200</span>,<span class="fl">204</span>,<span class="fl">204</span><span class="op">)</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">391</span>,<span class="fl">365</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">196</span>,<span class="fl">196</span><span class="op">)</span><span class="op">)</span>,shape<span class="op">=</span><span class="fl">1</span>,size<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">500</span>,<span class="fl">650</span>,<span class="fl">650</span>,<span class="fl">500</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">400</span>,<span class="fl">550</span>,<span class="fl">550</span><span class="op">)</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"white"</span>,color<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">575</span>,y<span class="op">=</span><span class="fl">475</span><span class="op">)</span>,shape<span class="op">=</span><span class="fl">1</span>,size<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">rel</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">575</span>,<span class="fl">576</span>,<span class="fl">576</span>,<span class="fl">575</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">400</span>,<span class="fl">550</span>,<span class="fl">550</span><span class="op">)</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">500</span>,<span class="fl">650</span>,<span class="fl">650</span>,<span class="fl">500</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">475</span>,<span class="fl">475</span>,<span class="fl">476</span>,<span class="fl">476</span><span class="op">)</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">620</span>,<span class="fl">670</span>,<span class="fl">670</span>,<span class="fl">620</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">620</span>,<span class="fl">620</span>,<span class="fl">800</span>,<span class="fl">800</span><span class="op">)</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"black"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">40</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">700</span>,y<span class="op">=</span><span class="fl">18</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">850</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">30</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">800</span>,y<span class="op">=</span><span class="fl">14</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">900</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 7
+      ID label type      x     y fill   color
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1     1 墙    qiang   200    50 brown  white
+ 2     1 墙    qiang   700    50 brown  white
+ 3     1 墙    qiang   700   600 brown  white
+ 4     1 墙    qiang   200   600 brown  white
+ 5     2 房顶  ding     50   600 black  black
+ 6     2 房顶  ding    450   830 black  black
+ 7     2 房顶  ding    850   600 black  black
+ 8     3 门    men     300    50 orange white
+ 9     3 门    men     450    50 orange white
+10     3 门    men     450   350 orange white
+# … with 28 more rows</code></pre>
+</div>
+</div>
+</section><section id="方法-2" class="level3" data-number="16.1.2"><h3 data-number="16.1.2" class="anchored" data-anchor-id="方法-2">
+<span class="header-section-number">16.1.2</span> 方法 2</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="cn">NULL</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,fill<span class="op">=</span><span class="va">fill</span>,color<span class="op">=</span><span class="va">color</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,breaks<span class="op">=</span><span class="cn">NULL</span>,label<span class="op">=</span><span class="cn">NULL</span>,limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,breaks<span class="op">=</span><span class="cn">NULL</span>,label<span class="op">=</span><span class="cn">NULL</span>,limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_identity.html">scale_fill_identity</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_identity.html">scale_color_identity</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"qiang"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span>   <span class="co">#墙</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"ding"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span>    <span class="co">#房顶</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"men"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span>     <span class="co">#门</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"menfeng"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span> <span class="co">#门缝</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"menshuan"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span><span class="co">#门栓</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"menhuan"</span><span class="op">)</span>,<span class="op">]</span>,shape<span class="op">=</span><span class="fl">1</span>,size<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">+</span> <span class="co">#门环</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"chuanghu"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span> <span class="co">#窗户</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"chuanghudong"</span><span class="op">)</span>,<span class="op">]</span>,shape<span class="op">=</span><span class="fl">1</span>,size<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">rel</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">+</span> <span class="co">#窗户洞</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"chuanghufeng1"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span> <span class="co">#窗户缝1</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"chuanghufeng2"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span> <span class="co">#窗户缝2</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">type</span><span class="op">==</span><span class="st">"yancong"</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span><span class="op">+</span> <span class="co">#烟囱</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">40</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">700</span>,y<span class="op">=</span><span class="fl">18</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">850</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">30</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">800</span>,y<span class="op">=</span><span class="fl">14</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">900</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="方法-3" class="level3" data-number="16.1.3"><h3 data-number="16.1.3" class="anchored" data-anchor-id="方法-3">
+<span class="header-section-number">16.1.3</span> 方法 3</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,fill<span class="op">=</span><span class="va">fill</span>,color<span class="op">=</span><span class="va">color</span>,group<span class="op">=</span><span class="va">ID</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">391</span>,<span class="fl">365</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">196</span>,<span class="fl">196</span><span class="op">)</span><span class="op">)</span>,shape<span class="op">=</span><span class="fl">1</span>,size<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">575</span>,y<span class="op">=</span><span class="fl">475</span><span class="op">)</span>,shape<span class="op">=</span><span class="fl">1</span>,size<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">rel</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">40</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">700</span>,y<span class="op">=</span><span class="fl">18</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">850</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_polygon.html">geom_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">30</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">800</span>,y<span class="op">=</span><span class="fl">14</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">0.01</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fl">900</span><span class="op">)</span>,fill<span class="op">=</span><span class="st">"grey"</span>,color<span class="op">=</span><span class="st">"black"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,breaks<span class="op">=</span><span class="cn">NULL</span>,label<span class="op">=</span><span class="cn">NULL</span>,limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="cn">NULL</span>,breaks<span class="op">=</span><span class="cn">NULL</span>,label<span class="op">=</span><span class="cn">NULL</span>,limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_identity.html">scale_fill_identity</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_identity.html">scale_color_identity</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section></section><section id="程序包下载量时序图" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="程序包下载量时序图">
+<span class="header-section-number">16.2</span> 程序包下载量时序图</h2>
+<blockquote class="blockquote">
+<p>统计Hadley Wickman主流的程序包 包括：‘tidyverse’,‘ggplot2’,‘dplyr’,‘tidyr’,‘stringr’,‘lubridate’ 统计截止到目前的下载量</p>
+</blockquote>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-hub/cranlogs">cranlogs</a></span><span class="op">)</span></span>
+<span><span class="va">data1</span><span class="op">=</span><span class="fu"><a href="https://r-hub.github.io/cranlogs/reference/cran_downloads.html">cran_downloads</a></span><span class="op">(</span>package<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'tidyverse'</span>,<span class="st">'ggplot2'</span>,<span class="st">'dplyr'</span>,<span class="st">'tidyr'</span>,</span>
+<span>                               <span class="st">'stringr'</span>,<span class="st">'lubridate'</span><span class="op">)</span>,</span>
+<span>                     from <span class="op">=</span> <span class="st">"2012-01-01"</span>, </span>
+<span>                     to <span class="op">=</span> <span class="st">"2022-09-30"</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 23,556 × 3
+   date       count package  
+   &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;    
+ 1 2012-01-01     0 tidyverse
+ 2 2012-01-02     0 tidyverse
+ 3 2012-01-03     0 tidyverse
+ 4 2012-01-04     0 tidyverse
+ 5 2012-01-05     0 tidyverse
+ 6 2012-01-06     0 tidyverse
+ 7 2012-01-07     0 tidyverse
+ 8 2012-01-08     0 tidyverse
+ 9 2012-01-09     0 tidyverse
+10 2012-01-10     0 tidyverse
+# … with 23,546 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggthemr</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr.html">ggthemr</a></span><span class="op">(</span><span class="st">"flat"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data1</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">date</span>,<span class="va">count</span>,group<span class="op">=</span><span class="va">package</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="va">package</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"日期"</span>,y<span class="op">=</span><span class="st">'下载量'</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"2012~2022[Hadley Wickham]程序包下载量时序图"</span>, </span>
+<span>       subtitle <span class="op">=</span> <span class="va">R.version.string</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        plot.subtitle<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr_reset.html">ggthemr_reset</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_new</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">count</span>,<span class="cn">TRUE</span><span class="op">)</span>,<span class="fl">10</span><span class="op">)</span> <span class="co">#排序，列出前十个，然后去掉</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data_new</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 1
+      value
+      &lt;dbl&gt;
+ 1 11692582
+ 2   835133
+ 3   208155
+ 4   173066
+ 5   166780
+ 6   139752
+ 7   134217
+ 8   127256
+ 9   125399
+10   122608</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_tidy</span><span class="op">=</span><span class="va">data1</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">count</span><span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span><span class="va">data_new</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">data1</span><span class="op">$</span><span class="va">package</span><span class="op">==</span><span class="st">"tidyverse"</span>,<span class="op">]</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data_tidy</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,924 × 3
+   date       count package  
+   &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;    
+ 1 2012-01-01     0 tidyverse
+ 2 2012-01-02     0 tidyverse
+ 3 2012-01-03     0 tidyverse
+ 4 2012-01-04     0 tidyverse
+ 5 2012-01-05     0 tidyverse
+ 6 2012-01-06     0 tidyverse
+ 7 2012-01-07     0 tidyverse
+ 8 2012-01-08     0 tidyverse
+ 9 2012-01-09     0 tidyverse
+10 2012-01-10     0 tidyverse
+# … with 3,914 more rows</code></pre>
+</div>
+</div>
+<section id="tidyverse下载量" class="level3" data-number="16.2.1"><h3 data-number="16.2.1" class="anchored" data-anchor-id="tidyverse下载量">
+<span class="header-section-number">16.2.1</span> tidyverse下载量</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr.html">ggthemr</a></span><span class="op">(</span><span class="st">"flat"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data_tidy</span>,</span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">date</span>,<span class="va">count</span>,group<span class="op">=</span><span class="va">package</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="va">package</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"日期"</span>,y<span class="op">=</span><span class="st">'下载量'</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"2012~2022[Hadley Wickham]程序包下载量时序图"</span>, </span>
+<span>       subtitle <span class="op">=</span> <span class="va">R.version.string</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        plot.subtitle<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr_reset.html">ggthemr_reset</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="其它包下载量" class="level3" data-number="16.2.2"><h3 data-number="16.2.2" class="anchored" data-anchor-id="其它包下载量">
+<span class="header-section-number">16.2.2</span> 其它包下载量</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr.html">ggthemr</a></span><span class="op">(</span><span class="st">"flat"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">package</span> <span class="op">!=</span><span class="st">"tidyverse"</span><span class="op">)</span>,<span class="op">]</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">date</span>,<span class="va">count</span>,group<span class="op">=</span><span class="va">package</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="va">package</span><span class="op">)</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"日期"</span>,y<span class="op">=</span><span class="st">'下载量'</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"2012~2022[Hadley Wickham]程序包下载量时序图"</span>, </span>
+<span>       subtitle <span class="op">=</span> <span class="va">R.version.string</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        plot.subtitle<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr_reset.html">ggthemr_reset</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="过去一年的下载量" class="level3" data-number="16.2.3"><h3 data-number="16.2.3" class="anchored" data-anchor-id="过去一年的下载量">
+<span class="header-section-number">16.2.3</span> 过去一年的下载量</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-hub/cranlogs">cranlogs</a></span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">=</span><span class="fu"><a href="https://r-hub.github.io/cranlogs/reference/cran_top_downloads.html">cran_top_downloads</a></span><span class="op">(</span><span class="st">"last-month"</span>,count <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 5
+    rank package       count from       to        
+   &lt;int&gt; &lt;chr&gt;         &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+ 1     1 ggplot2     2905989 2022-09-12 2022-10-11
+ 2     2 rlang       2797340 2022-09-12 2022-10-11
+ 3     3 dplyr       2468406 2022-09-12 2022-10-11
+ 4     4 vctrs       2343360 2022-09-12 2022-10-11
+ 5     5 cli         2234584 2022-09-12 2022-10-11
+ 6     6 ragg        2196955 2022-09-12 2022-10-11
+ 7     7 textshaping 2163882 2022-09-12 2022-10-11
+ 8     8 pillar      2067564 2022-09-12 2022-10-11
+ 9     9 lifecycle   2061452 2022-09-12 2022-10-11
+10    10 devtools    1569135 2022-09-12 2022-10-11
+11    11 tibble      1562876 2022-09-12 2022-10-11
+12    12 pkgdown     1546883 2022-09-12 2022-10-11
+13    13 sf          1498433 2022-09-12 2022-10-11
+14    14 stringr     1367417 2022-09-12 2022-10-11
+15    15 tidyr       1344871 2022-09-12 2022-10-11
+16    16 jsonlite    1324942 2022-09-12 2022-10-11
+17    17 stringi     1278953 2022-09-12 2022-10-11
+18    18 tidyselect  1277921 2022-09-12 2022-10-11
+19    19 glue        1276164 2022-09-12 2022-10-11
+20    20 rgeos       1239790 2022-09-12 2022-10-11</code></pre>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggthemr</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr.html">ggthemr</a></span><span class="op">(</span><span class="st">"flat"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">package</span>,<span class="va">count</span><span class="op">)</span>,y<span class="op">=</span><span class="va">count</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">'identity'</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>,y<span class="op">=</span><span class="st">'下载量'</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"过去一个月R包下载量TOP20"</span>, </span>
+<span>       subtitle <span class="op">=</span> <span class="va">R.version.string</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1000000</span>,<span class="fl">2800000</span>,length<span class="op">=</span><span class="fl">5</span><span class="op">)</span>,</span>
+<span>                     labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1000000</span>,<span class="fl">2800000</span>,length<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.title<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        plot.subtitle<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="fu"><a href="https://rdrr.io/pkg/ggthemr/man/ggthemr_reset.html">ggthemr_reset</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="kaggle主要工具使用比" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="kaggle主要工具使用比">
+<span class="header-section-number">16.3</span> kaggle主要工具使用比</h2>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">tools_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">tools_data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 15 × 2
+   selections                     count
+   &lt;chr&gt;                          &lt;dbl&gt;
+ 1 Bayesian Techniques             2236
+ 2 CNNS                            1383
+ 3 Decision Trees                  3640
+ 4 Ensemble Methods                2078
+ 5 Evolutionary Approaches          404
+ 6 GANs                             207
+ 7 Gradient Boosted Machines       1742
+ 8 HMMs                             392
+ 9 Markov Logic Networks            355
+10 Neural Networks                 2743
+11 Other                            609
+12 Random Forests                  3378
+13 Regression/Logistic Regression  4636
+14 RNNS                             895
+15 SVMs                            1963</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1460.2</span>, <span class="fl">2920.4</span>, <span class="fl">4380.6</span>, <span class="fl">5840.8</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">tools_data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">selections</span>,<span class="va">count</span><span class="op">)</span>,y<span class="op">=</span><span class="va">count</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="va">bks</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span><span class="op">]</span>,color<span class="op">=</span><span class="st">"grey"</span>,size<span class="op">=</span><span class="fl">1</span>,linetype<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">count</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">7301</span>,<span class="fl">2</span><span class="op">)</span>,<span class="st">"%"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span><span class="op">)</span>,hjust<span class="op">=</span><span class="op">-</span><span class="fl">0.3</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span>label<span class="op">=</span><span class="st">"tools"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span><span class="st">"percent"</span>, limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5000</span><span class="op">)</span>,breaks <span class="op">=</span> <span class="va">bks</span><span class="op">[</span><span class="op">-</span><span class="fl">5</span><span class="op">]</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">bks</span><span class="op">[</span><span class="op">-</span><span class="fl">5</span><span class="op">]</span><span class="op">*</span><span class="fl">100</span><span class="op">/</span><span class="fl">7301</span><span class="op">)</span>,<span class="st">"%"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_light</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="申请基金与年龄的关系" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="申请基金与年龄的关系">
+<span class="header-section-number">16.4</span> 申请基金与年龄的关系</h2>
+<section id="不同阶段成功次数" class="level3" data-number="16.4.1"><h3 data-number="16.4.1" class="anchored" data-anchor-id="不同阶段成功次数">
+<span class="header-section-number">16.4.1</span> 不同阶段成功次数</h3>
+<blockquote class="blockquote">
+<p>根据二项分布求出的理论最大成功申请基金的数量和年龄的关系</p>
+</blockquote>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">6</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 2
+   年龄  理论最大成功次数
+   &lt;chr&gt;            &lt;dbl&gt;
+ 1 28—30               11
+ 2 31—33               10
+ 3 34—36                9
+ 4 37—39                8
+ 5 40—42                7
+ 6 43—45                6
+ 7 46—48                5
+ 8 49—51                4
+ 9 52—54                3
+10 55—57                2
+11 58—60                1
+12 61—63                0</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">年龄</span>,y<span class="op">=</span><span class="va">理论最大成功次数</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">geom_linerange</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="va">理论最大成功次数</span><span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>                 color<span class="op">=</span><span class="st">"grey"</span>,size<span class="op">=</span><span class="fl">3</span>,linetype<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">理论最大成功次数</span><span class="op">-</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>             shape<span class="op">=</span><span class="fl">17</span>,size<span class="op">=</span><span class="fl">10</span>,color<span class="op">=</span><span class="st">"magenta"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="va">理论最大成功次数</span><span class="op">)</span>,</span>
+<span>            vjust<span class="op">=</span><span class="op">-</span><span class="fl">0.5</span>,fontface<span class="op">=</span><span class="st">"bold"</span>,size<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="年龄段与最大命中率" class="level3" data-number="16.4.2"><h3 data-number="16.4.2" class="anchored" data-anchor-id="年龄段与最大命中率">
+<span class="header-section-number">16.4.2</span> 年龄段与最大命中率</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">7</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   年龄  命中次数 命中率
+   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+ 1 28—30        4   0.21
+ 2 31—33        4   0.22
+ 3 34—36        3   0.23
+ 4 37—39        3   0.25
+ 5 40—42        3   0.25
+ 6 43—45        2   0.28
+ 7 46—48        2   0.3 
+ 8 49—51        1   0.34
+ 9 52—54        1   0.39
+10 55—57        1   0.41
+11 58—60        0   0.64
+12 61—63        0   1   </code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">年龄</span>,y<span class="op">=</span><span class="va">命中次数</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">22</span>,shape<span class="op">=</span><span class="fl">21</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_step</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>group<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,linetype<span class="op">=</span><span class="fl">6</span>,size<span class="op">=</span><span class="fl">2</span>,color<span class="op">=</span><span class="st">"grey"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">命中率</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,vjust<span class="op">=</span><span class="fl">0.4</span>,fontface<span class="op">=</span><span class="st">"bold"</span><span class="op">)</span>,size<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="年龄段次数和概率" class="level3" data-number="16.4.3"><h3 data-number="16.4.3" class="anchored" data-anchor-id="年龄段次数和概率">
+<span class="header-section-number">16.4.3</span> 年龄段次数和概率</h3>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 144 × 3
+   年龄  命中次数  命中率
+   &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;
+ 1 28—30 00       0.00738
+ 2 31—33 00       0.0115 
+ 3 34—36 00       0.0180 
+ 4 37—39 00       0.0281 
+ 5 40—42 00       0.0440 
+ 6 43—45 00       0.0687 
+ 7 46—48 00       0.107  
+ 8 49—51 00       0.168  
+ 9 52—54 00       0.262  
+10 55—57 00       0.410  
+# … with 134 more rows</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jrnold/ggthemes">ggthemes</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">命中次数</span>,y<span class="op">=</span><span class="va">命中率</span>,fill<span class="op">=</span><span class="va">年龄</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%02.f"</span>,<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">12</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span>,labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">12</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">年龄</span>,scale<span class="op">=</span><span class="st">"free"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggthemes/man/theme_wsj.html">theme_wsj</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section></section><section id="相关矩阵" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="相关矩阵">
+<span class="header-section-number">16.5</span> 相关矩阵</h2>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://personality-project.org/r/psych/">psych</a></span><span class="op">)</span> <span class="co">#计算相关系数及P值</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span><span class="co">#数据处理及可视化</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="va">mtcars</span><span class="co">#读入示例数据</span></span>
+<span><span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span>;<span class="co"># x轴方向的变量，即显示mtcars中mpg,cyl,disp变量</span></span>
+<span><span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span>;<span class="co"># y轴方向的变量，即显示mtcars中所有的11个变量</span></span>
+<span><span class="va">cormat</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/corr.test.html">corr.test</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="va">r</span><span class="op">&lt;-</span><span class="va">cormat</span><span class="op">$</span><span class="va">r</span><span class="op">[</span><span class="va">x</span>,<span class="va">y</span><span class="op">]</span>;<span class="va">r</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>;<span class="va">r</span><span class="op">$</span><span class="va">namer</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
+<span><span class="va">r</span><span class="op">&lt;-</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span><span class="va">r</span>,key<span class="op">=</span><span class="va">var1</span>,value<span class="op">=</span><span class="va">cor</span>,<span class="op">-</span><span class="va">namer</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p</span><span class="op">&lt;-</span><span class="va">cormat</span><span class="op">$</span><span class="va">p</span><span class="op">[</span><span class="va">x</span>,<span class="va">y</span><span class="op">]</span>;<span class="va">p</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>;<span class="va">p</span><span class="op">$</span><span class="va">namep</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="va">p</span><span class="op">&lt;-</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span><span class="va">p</span>,key<span class="op">=</span><span class="va">var2</span>,value<span class="op">=</span><span class="va">p</span>,<span class="op">-</span><span class="va">namep</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#根据 x和y向量的长度生成网格序列存入df数据框中</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">df</span>,<span class="va">r</span>,<span class="va">p</span><span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">sig</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">cor</span><span class="op">&lt;=</span><span class="fl">0.001</span>,<span class="st">"***"</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">cor</span><span class="op">&lt;=</span><span class="fl">0.01</span>,<span class="st">"**"</span>,</span>
+<span>                      <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">cor</span><span class="op">&lt;=</span><span class="fl">0.05</span>,<span class="st">"*"</span>,</span>
+<span>                             <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">cor</span><span class="op">&lt;=</span><span class="fl">0.10</span>,<span class="st">"+"</span>,<span class="st">"-"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">xlabel</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>,<span class="st">"y"</span>,<span class="st">"var1"</span><span class="op">)</span><span class="op">]</span>,<span class="va">y</span><span class="op">)</span><span class="op">$</span><span class="va">var1</span><span class="op">)</span> <span class="co">#y方向的变量名称</span></span>
+<span><span class="va">ylabel</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>,<span class="st">"y"</span>,<span class="st">"namer"</span><span class="op">)</span><span class="op">]</span>,<span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">namer</span><span class="op">)</span> <span class="co">#x方向的变量名称</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, fill <span class="op">=</span> <span class="va">cor</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0</span>, vjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">-</span><span class="fl">0.5</span>,y<span class="op">=</span><span class="va">y</span><span class="op">-</span><span class="fl">0.5</span>,label<span class="op">=</span><span class="va">sig</span><span class="op">)</span>,size<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">+</span> <span class="co">#显著度</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">'text'</span>,x<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">xlabel</span><span class="op">)</span>,<span class="fl">1</span><span class="op">)</span><span class="op">-</span><span class="fl">1.5</span>,</span>
+<span>           label<span class="op">=</span><span class="va">xlabel</span>,size<span class="op">=</span><span class="fl">5</span>,hjust<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">'text'</span>,x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ylabel</span><span class="op">)</span>,<span class="fl">1</span><span class="op">)</span><span class="op">-</span><span class="fl">1.5</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">-</span><span class="fl">0.7</span>,</span>
+<span>           label<span class="op">=</span><span class="va">ylabel</span>,size<span class="op">=</span><span class="fl">5</span>,angle<span class="op">=</span><span class="fl">90</span>,hjust<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>                     breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                     breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_fixed</a></span><span class="op">(</span>ratio<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>guide<span class="op">=</span><span class="cn">FALSE</span>,low <span class="op">=</span> <span class="st">"#5da6bb"</span>, </span>
+<span>                       mid<span class="op">=</span><span class="st">"#FFFFFF"</span>,high <span class="op">=</span> <span class="st">"#fb5c39"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.title<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        axis.ticks<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        axis.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>        panel.background  <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="读取shp文件" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="读取shp文件">
+<span class="header-section-number">16.6</span> 读取shp文件</h2>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 367 × 4
+   name         lon   lat elevation
+   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+ 1 诸暨       120.   29.7      16.4
+ 2 昌都地区    96.9  30.1    3433. 
+ 3 林芝地区    94.4  29.6    3204. 
+ 4 日喀则地区  88.9  29.3    3896. 
+ 5 山南地区    91.8  29.2    3605. 
+ 6 黄山       118.   29.7     193. 
+ 7 朝阳       120.   41.6     181. 
+ 8 铜仁地区   109.   27.7     389. 
+ 9 阿克苏地区  80.3  41.2    1113. 
+10 玉树州      97.0  33.0    3895. 
+# … with 357 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jrnold/ggthemes">ggthemes</a></span><span class="op">)</span></span>
+<span><span class="va">china_map</span><span class="op">&lt;-</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"data/province.shp"</span><span class="op">)</span><span class="co">#province border</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `province' from data source 
+  `E:\R_tmp\aproaching_ggplot2\data\province.shp' using driver `ESRI Shapefile'
+Simple feature collection with 34 features and 4 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 73.50235 ymin: 3.83703 xmax: 135.0957 ymax: 53.56362
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<details><summary>Code</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">china_map</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">pr_name</span>,geometry<span class="op">=</span><span class="va">geometry</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>fill<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggthemes/man/theme_map.html">theme_map</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="等值线图" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="等值线图">
+<span class="header-section-number">16.7</span> 等值线图</h2>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"data/data.xlsx"</span>,<span class="fl">11</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 199 × 16
+   st.no   lon   lat   Mon   Tue   Wed   Thu   Fri   Sat   Sun   Jan spring
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ 1   258 123.   41.7 101.   96.4  94.7  95.7  97.7 104.  102.  122.    98.3
+ 2   244 115.   38.0 132.  135.  136.  139.  143.  144.  136.  221.   123. 
+ 3    79 119.   26.1  58.9  58.4  57.1  57.9  59.3  58.1  58.5  68.0   64.8
+ 4    45 113.   28.2  90.7  89.0  88.6  85.5  88.4  89.5  89.9 149.    80.5
+ 5   142 117.   36.7 121.  115.  119.  126.  122.  125.  127.  169.   119. 
+ 6   194 104.   36.1  92.6  90.1  96.2  98.8 102.   95.4  91.7 111.    99.0
+ 7   288 114.   30.6 102.   96.7  96.6  97.2  98.6 101.  104.  163.    94.8
+ 8   294  87.6  43.8 109.  107.  113.  112.  110.  106.  106.  203.    93.8
+ 9    21 116.   39.9 108.  111.  112.  118.  119.  124.  116.  124.   114. 
+10    99 127.   45.8  90.6  91.9  91.1  91.8  95.9  95.7  94.5 150.    76.4
+# … with 189 more rows, and 4 more variables: summer &lt;dbl&gt;, autumn &lt;dbl&gt;,
+#   winter &lt;dbl&gt;, annual &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#栅格化每一列数据，存入data_grid中，以进行画图</span></span>
+<span><span class="co">#数据表列名依次为:lon,lat,Mon,Tue,Wed,……,annual</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_grid</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>lon<span class="op">=</span><span class="cn">NA</span>,lat<span class="op">=</span><span class="cn">NA</span>,value<span class="op">=</span><span class="cn">NA</span>,tag<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co"># time_vec&lt;-c('annual','spring','summer','autumn','winter',</span></span>
+<span><span class="co">#             'Mon','Tue','Wed','Thu','Fri','Sat','Sun')</span></span>
+<span></span>
+<span><span class="va">time_vec</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'spring'</span>,<span class="st">'summer'</span>,<span class="st">'autumn'</span>,<span class="st">'winter'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">time_vec</span><span class="op">)</span></span>
+<span><span class="op">{</span></span>
+<span>  <span class="va">annual_loess</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/loess.html">loess</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">==</span><span class="va">i</span><span class="op">)</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">~</span><span class="va">lon</span><span class="op">+</span><span class="va">lat</span>,data<span class="op">=</span><span class="va">data</span><span class="op">)</span></span>
+<span>  <span class="va">lon_grid</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>,<span class="fl">0.25</span><span class="op">)</span></span>
+<span>  <span class="va">lat_grid</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>,<span class="fl">0.25</span><span class="op">)</span></span>
+<span>  <span class="va">data.fit</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>lon<span class="op">=</span><span class="va">lon_grid</span>,lat<span class="op">=</span><span class="va">lat_grid</span><span class="op">)</span></span>
+<span>  <span class="va">annual_predict</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">annual_loess</span>,newdata<span class="op">=</span><span class="va">data.fit</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">annual_predict</span><span class="op">$</span><span class="va">lon</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">annual_predict</span><span class="op">)</span></span>
+<span>  <span class="va">annual_grid</span><span class="op">&lt;-</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span><span class="va">annual_predict</span>,<span class="va">lat</span>,<span class="va">value</span>,<span class="op">-</span><span class="va">lon</span><span class="op">)</span></span>
+<span>  <span class="va">annual_grid</span><span class="op">$</span><span class="va">lon</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">annual_grid</span><span class="op">$</span><span class="va">lon</span>,<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate</a></span><span class="op">(</span><span class="va">annual_grid</span><span class="op">$</span><span class="va">lon</span>,<span class="st">'='</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">annual_grid</span><span class="op">$</span><span class="va">lat</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">annual_grid</span><span class="op">$</span><span class="va">lat</span>,<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_locate.html">str_locate</a></span><span class="op">(</span><span class="va">annual_grid</span><span class="op">$</span><span class="va">lat</span>,<span class="st">'='</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  <span class="va">annual_grid</span><span class="op">$</span><span class="va">tag</span><span class="op">&lt;-</span><span class="va">i</span></span>
+<span>  <span class="va">data_grid</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">data_grid</span>,<span class="va">annual_grid</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">data_grid</span><span class="op">&lt;-</span><span class="va">data_grid</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">data_grid</span><span class="op">$</span><span class="va">tag</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="va">data_grid</span><span class="op">$</span><span class="va">tagnew</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">data_grid</span><span class="op">$</span><span class="va">tag</span>,ordered<span class="op">=</span><span class="cn">TRUE</span>,levels<span class="op">=</span><span class="va">time_vec</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_contour.html">stat_contour</a></span><span class="op">(</span>geom<span class="op">=</span><span class="st">"polygon"</span>,data<span class="op">=</span><span class="va">data_grid</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">lon</span>, y<span class="op">=</span><span class="va">lat</span>, z<span class="op">=</span><span class="va">value</span>,fill<span class="op">=</span><span class="va">..level..</span><span class="op">)</span>,binwidth<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Spectral"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">tagnew</span>,ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="adv_exam_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./adv_multi_plot.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">multiplot</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ex.html" class="pagination-link">
+        <span class="nav-page-text">■ Practical</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

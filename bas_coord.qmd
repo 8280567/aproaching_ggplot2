@@ -1,0 +1,23 @@
+# coord()
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(mpg)+
+  geom_bar(aes(manufacturer))+
+  coord_flip()
+```
+
+```{r}
+ggplot(mpg)+
+  geom_bar(aes(manufacturer))+
+  coord_fixed(ratio=3/2)
+```
+```{r}
+ggplot(mpg)+
+  geom_bar(aes(manufacturer))+
+  coord_polar(theta="x")
+```
+

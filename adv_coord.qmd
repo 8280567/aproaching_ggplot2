@@ -1,0 +1,118 @@
+# coord()
+>coor_flip(); coor_fixed(); coor_polar(); coor_trans()
+
+```{r}
+library(tidyverse)
+```
+
+## xlim,ylim
+
+```{r}
+p0<-ggplot(mpg, aes(displ, hwy))+geom_point()+geom_smooth();p0
+```
+
+```{r}
+p0+scale_x_continuous(limits = c(5, 7))
+```
+
+```{r}
+p0+coord_cartesian(xlim = c(5, 7))
+```
+
+```{r}
+p1<-ggplot(mpg,aes(displ,hwy))+geom_bin2d(bins=30);p1
+```
+
+```{r}
+p1+scale_x_continuous(limits = c(5, 7))
+```
+
+```{r}
+p1+coord_cartesian(xlim = c(5, 7))
+```
+
+## coord_flip()
+
+```{r}
+p<-ggplot(mtcars, aes(mpg, wt)) + geom_col();p 
+```
+
+```{r}
+# 使用coord_flip()交换x/y轴#
+    p+coord_flip()
+```
+
+## coord_fixed()
+
+```{r}
+#坐标轴比例coord_fixed()#
+    p+coord_fixed(ratio=1/5)
+```
+
+## coord_polar
+
+```{r}
+#极坐标coord_polar(theta = "x/y")#
+     p+coord_polar(theta = "y",start=pi/2,direction=1)
+```
+
+## coord_trans()
+
+```{r}
+d <- subset(diamonds, carat > 0.5)
+ggplot(d, aes(carat, price)) +  geom_point()+  geom_smooth(method = "lm")
+```
+
+```{r}
+ggplot(d, aes(log10(carat), log10(price))) +  geom_point()+  geom_smooth(method = "lm")
+```
+
+```{r}
+ggplot(d, aes(carat, price)) + geom_point() +  geom_smooth(method = "lm")+
+  scale_x_log10()+scale_y_log10()
+```
+
+```{r}
+ggplot(d, aes(carat, price)) +  geom_point() +  geom_smooth(method = "lm")+
+  coord_trans(x = "log10", y = "log10")
+```
+
+```{r}
+ggplot(d, aes(carat, price)) +  geom_point() +  geom_smooth(method = "lm") +
+  scale_x_log10() +  scale_y_log10() +
+  coord_trans(x = scales::exp_trans(10), y = scales::exp_trans(10))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

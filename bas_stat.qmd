@@ -1,0 +1,19 @@
+# stat()
+```{r}
+library(ggplot2)
+```
+
+## stat="count"
+
+```{r}
+ggplot(mpg)+geom_bar(aes(class),stat="count")
+```
+
+```{r}
+ggplot(mpg)+stat_count(aes(class),geom = "bar")
+```
+
+```{r}
+ggplot(mpg)+stat_count(aes(class),geom = "point",size=10,shape=12)
+```
+
