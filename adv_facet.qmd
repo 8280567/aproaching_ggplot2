@@ -1,11 +1,13 @@
 # facet()
->facet_grid(),facet_wrap()
+
+> facet_grid(),facet_wrap()
 
 ```{r}
 library(tidyverse)
 ```
 
 ## 离散型变量
+
 ```{r}
 p<-ggplot(mpg,aes(displ, hwy , color = cyl)) + geom_point(alpha=0.5);p 
 ```
@@ -100,13 +102,3 @@ geom_point(alpha=0.5) +facet_grid(drv ~ cyl);p
 p+theme(strip.text=element_text(face="bold",size=rel(1.5)),
         strip.background=element_rect(fill="lightblue",color="red",size=rel(5)))
 ```
-
-
-
-
-
-
-
-
-
-

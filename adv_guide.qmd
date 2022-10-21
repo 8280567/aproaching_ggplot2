@@ -1,11 +1,12 @@
 # guides()
->guides(); guide_colorbar(); guide_legend()
+
+> guides(); guide_colorbar(); guide_legend()
 
 ```{r}
 library(tidyverse)
 ```
 
-## scale_*_* VS guides()
+## scale\_\*\_\* VS guides()
 
 ```{r}
 df <- reshape2::melt(outer(1:4, 1:4), varnames = c("X1", "X2"))
@@ -146,26 +147,32 @@ p+scale_fill_gradient(breaks=seq(0,100,10),guide=colorbar)+
 ```
 
 
+## 删除图例
+```{r}
+ggplot(mpg)+
+  geom_point(aes(cty, 
+                 hwy, 
+                 shape = manufacturer))+
+  scale_shape_manual(values=seq(0,15,1),
+                     guide=FALSE)
+```
+
+```{r}
+ggplot(mpg)+
+  geom_point(aes(cty, 
+                 hwy, 
+                 shape = manufacturer))+
+  scale_shape_manual(values=seq(0,15,1),
+                     guide="none")
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+ggplot(mpg)+
+  geom_point(aes(cty, 
+                 hwy, 
+                 color = manufacturer))+
+  #guides(color=FALSE)+
+  scale_color_discrete(guide=FALSE)
+```
 

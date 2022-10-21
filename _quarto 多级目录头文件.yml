@@ -1,0 +1,39 @@
+project:
+  type: book
+  output-dir: docs
+  
+book:
+  title: "test"
+  author: "Jane Doe"
+  date: "2022/10/12"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+    - part: index.qmd
+      chapters: 
+        - index.qmd
+        - intro.qmd
+        - summary.qmd
+        - references.qmd
+    - part: index.qmd
+      chapters: 
+        - index.qmd
+        - intro.qmd
+        - summary.qmd
+        - references.qmd
+  appendices:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    cover-image: cover.png
+
+editor: visual
+

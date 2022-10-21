@@ -103,5 +103,187 @@
     "title": "\n6  facet()\n",
     "section": "",
     "text": "p<-ggplot(mpg)+aes(cty,hwy)+geom_point()+geom_smooth();p\n\n`geom_smooth()` using method = 'loess' and formula 'y ~ x'\n\n\n\n\n\n\np+facet_grid(.~drv)\n\n`geom_smooth()` using method = 'loess' and formula 'y ~ x'\n\n\n\n\n\n\np<-ggplot(mpg)+aes(cty,hwy)+geom_point()+geom_smooth()+coord_polar(theta = \"y\");p\n\n`geom_smooth()` using method = 'loess' and formula 'y ~ x'\n\n\n\n\n\n\np+facet_grid(.~drv)\n\n`geom_smooth()` using method = 'loess' and formula 'y ~ x'\n\n\n\n\n\n\nggplot(mpg)+\n  geom_point(aes(cty,hwy,color=class,shape=as.factor(cyl)))+\n  facet_wrap(~class)\n\n\n\n\n\nggplot(mpg,aes(cty,hwy,color=class))+\n  geom_smooth(method=\"lm\",color=\"grey\",size=4)+ \n  geom_point(size=3)+\n  facet_wrap(~class)\n\n`geom_smooth()` using formula 'y ~ x'"
+  },
+  {
+    "objectID": "bas_coord.html",
+    "href": "bas_coord.html",
+    "title": "\n5  coord()\n",
+    "section": "",
+    "text": "ggplot(mpg)+\n  geom_bar(aes(manufacturer))+\n  coord_flip()\n\n\n\n\n\nggplot(mpg)+\n  geom_bar(aes(manufacturer))+\n  coord_fixed(ratio=3/2)\n\n\n\n\n\nggplot(mpg)+\n  geom_bar(aes(manufacturer))+\n  coord_polar(theta=\"x\")"
+  },
+  {
+    "objectID": "adv_text.html",
+    "href": "adv_text.html",
+    "title": "\n9  annotate()\n",
+    "section": "",
+    "text": "library(ggplot2)\nggplot(mpg,aes(displ, hwy , color = cyl)) + geom_point()\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  annotate(\"rect\",xmin=4.5,xmax=7.1,ymin=0,ymax=27,color=\"red\",alpha=0.3,size=2)\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  annotate(\"segment\",x=2.5,y=20,xend=3,yend=35,color=\"blue\",size=10,alpha=0.1)\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  annotate(\"segment\",x=2.5,y=20,xend=3,yend=35,color=\"blue\",\n           arrow=arrow(end=\"last\",angle=30,length=unit(1,\"cm\")))"
+  },
+  {
+    "objectID": "adv_text.html#geom_text",
+    "href": "adv_text.html#geom_text",
+    "title": "\n9  annotate()\n",
+    "section": "\n9.2 geom_text",
+    "text": "9.2 geom_text\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + geom_point()\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  geom_text(label=\"TEST\",color=\"red\")\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  geom_text(aes(label=manufacturer),color=\"red\")\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  geom_text(x=4,y=40,label=\"TEST\",color=\"red\",alpha=0.1)\n\n\n\n\n\nggplot(mpg,aes(displ, hwy , color = cyl)) + \n  geom_point()+\n  geom_text(label=\"TEST\",color=\"red\",vjust=0.3,hjust=-0.2)"
+  },
+  {
+    "objectID": "adv_text.html#实例",
+    "href": "adv_text.html#实例",
+    "title": "\n9  annotate()\n",
+    "section": "\n9.3 实例",
+    "text": "9.3 实例\n\nlibrary(plyr)\nlibrary(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n✔ purrr   0.3.5      \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::arrange()   masks plyr::arrange()\n✖ purrr::compact()   masks plyr::compact()\n✖ dplyr::count()     masks plyr::count()\n✖ dplyr::failwith()  masks plyr::failwith()\n✖ dplyr::filter()    masks stats::filter()\n✖ dplyr::id()        masks plyr::id()\n✖ dplyr::lag()       masks stats::lag()\n✖ dplyr::mutate()    masks plyr::mutate()\n✖ dplyr::rename()    masks plyr::rename()\n✖ dplyr::summarise() masks plyr::summarise()\n✖ dplyr::summarize() masks plyr::summarize()\n\nlm_labels <- function(dat) {\n    mod <- lm(hwy ~ displ, data=dat)\n    formula <- sprintf(\"italic(y) == %.2f %+.2f * italic(x) \",  round(coef(mod)[1], 2), round(coef(mod)[2], 2))\n    r <- cor(dat$displ, dat$hwy)\n    r2 <- sprintf(\"italic(R^2) == %.2f\", r^2)\n    data.frame(formula=formula, r2=r2, stringsAsFactors=FALSE)}\n\nlabels<-ddply(mpg,\"cyl\",lm_labels);labels[2,]<-c(\"5\",\"数据个数太少\",\"无法拟合\")\n\nWarning in cor(dat$displ, dat$hwy): the standard deviation is zero\n\nlabels\n\n  cyl                               formula                  r2\n1   4 italic(y) == 46.60 -8.29 * italic(x)  italic(R^2) == 0.34\n2   5                          数据个数太少            无法拟合\n3   6 italic(y) == 36.38 -3.98 * italic(x)  italic(R^2) == 0.26\n4   8 italic(y) == 10.97 +1.30 * italic(x)  italic(R^2) == 0.05\n\n\n\nggplot(mpg,aes(displ,hwy))+ \n  geom_point()+\n  facet_grid(cyl~.)+\n  geom_smooth(se=FALSE,method=\"lm\")+\n  geom_text(x=5,y=40,aes(label=formula),data=labels,parse=TRUE,vjust=0)+\n  geom_text(x=5,y=35,aes(label=r2),data=labels,parse=TRUE,vjust=-0.1)\n\n`geom_smooth()` using formula 'y ~ x'"
+  },
+  {
+    "objectID": "bas_geom.html",
+    "href": "bas_geom.html",
+    "title": "\n3  geom()\n",
+    "section": "",
+    "text": "library(plyr)\nlibrary(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.3.6      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::arrange()   masks plyr::arrange()\n✖ purrr::compact()   masks plyr::compact()\n✖ dplyr::count()     masks plyr::count()\n✖ dplyr::failwith()  masks plyr::failwith()\n✖ dplyr::filter()    masks stats::filter()\n✖ dplyr::id()        masks plyr::id()\n✖ dplyr::lag()       masks stats::lag()\n✖ dplyr::mutate()    masks plyr::mutate()\n✖ dplyr::rename()    masks plyr::rename()\n✖ dplyr::summarise() masks plyr::summarise()\n✖ dplyr::summarize() masks plyr::summarize()\n\nggplot(mpg, aes(cty, hwy))+geom_point()"
+  },
+  {
+    "objectID": "bas_geom.html#geom_smooth",
+    "href": "bas_geom.html#geom_smooth",
+    "title": "\n3  geom()\n",
+    "section": "\n3.2 geom_smooth()",
+    "text": "3.2 geom_smooth()\n\nggplot(mpg, aes(cty, hwy))+geom_smooth() \n\n`geom_smooth()` using method = 'loess' and formula 'y ~ x'"
+  },
+  {
+    "objectID": "bas_geom.html#geom_bar",
+    "href": "bas_geom.html#geom_bar",
+    "title": "\n3  geom()\n",
+    "section": "\n3.3 geom_bar()",
+    "text": "3.3 geom_bar()\n\nlibrary(ggplot2)\n\n\nggplot()+geom_bar(data=mpg,mapping=aes(manufacturer))\n\n\n\n\n\nggplot()+geom_bar(data=mpg,mapping=aes(class))"
+  },
+  {
+    "objectID": "bas_geom.html#geom_line",
+    "href": "bas_geom.html#geom_line",
+    "title": "\n3  geom()\n",
+    "section": "\n3.4 geom_line()",
+    "text": "3.4 geom_line()\n\ndf <- data.frame(x = 1:10, y = c(4, 1, 9, 5, 8, 7, 3, 8, 3, 5))\ndf\n\n    x y\n1   1 4\n2   2 1\n3   3 9\n4   4 5\n5   5 8\n6   6 7\n7   7 3\n8   8 8\n9   9 3\n10 10 5\n\nggplot(df, aes(x, y))+\n  geom_line(size = 10)\n\n\n\nggplot(df, aes(x, y))+\n  geom_step(size = 10)"
+  },
+  {
+    "objectID": "bas_geom.html#实例",
+    "href": "bas_geom.html#实例",
+    "title": "\n3  geom()\n",
+    "section": "\n3.5 实例",
+    "text": "3.5 实例\n\ngroup_cyl<-group_by(mpg,cyl)\ndata_sumr<- summarise(group_cyl,avg=mean(hwy),se=sd(hwy)/sqrt(n()))\ndata_sumr\n\n# A tibble: 4 × 3\n    cyl   avg    se\n  <int> <dbl> <dbl>\n1     4  28.8 0.502\n2     5  28.8 0.25 \n3     6  22.8 0.415\n4     8  17.6 0.390\n\n\n\np<-ggplot(data_sumr,aes(cyl, avg)) + geom_line()+geom_point(size=4) \np+geom_errorbar(aes(ymin=avg-se, ymax=avg+se), width=0.1)"
+  },
+  {
+    "objectID": "adv_scale.html",
+    "href": "adv_scale.html",
+    "title": "\n10  scale()\n",
+    "section": "",
+    "text": "公共参数name,breaks,labels,limits\n\n\n\nlibrary(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.3.6      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n\n\n\np0 <- ggplot(mpg, aes(class))+geom_bar(aes(fill=drv));p0\n\n\n\n\n\n#更改图例名字 #\np0 + scale_fill_discrete(name=\"class\") \n\n\n\n\n\n# 对应指定并更改图例标签 #\np0 + scale_fill_discrete (breaks = c(\"4\", \"r\", \"f\"), \n                          labels = c(\"four\", \"rr\", \"rr\"))\n\n\n\n\n\n# 只显示4和r对应部分# \np0 + scale_fill_discrete (limits=c(\"4\", \"r\")) \n\n\n\n\n\n# 多出一个分类#\np0 + scale_fill_discrete (limits=c(\"4\", \"r\", \"f\", \"6\"))\n\n\n\n\n\n\np1 <- ggplot(mtcars, aes(factor(cyl), mpg)) + geom_point();p1\n\n\n\n\n\np1 + scale_x_discrete(name=\"cyl\") \n\n\n\n\n\np1 + scale_x_discrete(labels = c(\"4\"=\"a\",\"6\"=\"b\",\"8\"=\"c\")) \n\n\n\n\n\np1 + scale_x_discrete(labels = letters[1:3],breaks=c(\"4\",\"6\",\"8\")) \n\n\n\n\n\np1 + scale_x_discrete(labels = c(\"4\"=\"a\",\"6\"=\"b\"))\n\n\n\n\n\np1 + scale_x_discrete(labels = letters[1:3])\n\n\n\n\n\np1 + scale_x_discrete(limits=c(\"4\",\"6\"))\n\nWarning: Removed 14 rows containing missing values (geom_point).\n\n\n\n\n\n\n\np2<-ggplot(mpg,aes(displ, hwy , color = cyl))+geom_point();p2\n\n\n\n\n\np2 +scale_color_continuous (name=\"Cyl\",\n                            breaks=c(7.5,6.2,4.9),\n                            labels=c(\"a\",\"b\",\"c\"))\n\n\n\n\n\np2 +scale_color_continuous (name=\"CYL\",\n                            limits=c(5,6.8))\n\n\n\n\n\n\np3 <- ggplot(mtcars, aes(factor(cyl), mpg)) + geom_point();p3\n\n\n\n\n\np3 + scale_y_continuous(\"ylab_mpg\")\n\n\n\n\n\np3 + scale_y_continuous(breaks = c(10,20,30))\n\n\n\n\n\np3 + scale_y_continuous(breaks = c(10,20,30), labels=scales::dollar)\n\n\n\n\n\np3 + scale_y_continuous(limits = c(10,30))\n\nWarning: Removed 4 rows containing missing values (geom_point).\n\n\n\n\n\n\np3 + scale_y_reverse() # 纵坐标翻转，小数在上面，大数在下面#\n\n\n\n\n\np3 + scale_y_log10()\n\n\n\n\n\np3 + scale_y_continuous(trans = \"log10\")\n\n\n\n\n\np3 + scale_y_sqrt()"
+  },
+  {
+    "objectID": "adv_scale.html#更改颜色",
+    "href": "adv_scale.html#更改颜色",
+    "title": "\n10  scale()\n",
+    "section": "\n10.2 更改颜色",
+    "text": "10.2 更改颜色\n\n更改color/fill\n\n\n10.2.1 离散型 例 1\n\np0 <- ggplot(mpg, aes(class))+geom_bar(aes(fill=drv));p0 \n\n\n\n\n\np0 + scale_fill_manual(values=c(\"red\", \"blue\", \"green\")) # 直接指定三个颜色# \n\n\n\n\n\np0 + scale_color_hue(h=c(15,100)) #前面使用fill分组，用color系列无效#\n\n\n\n\n\np0 + scale_fill_brewer(palette = \"Greens\",direction = -1)\n\n\n\n\n\np0 + scale_fill_grey(start=1, end=0.5)#0为黑，1为白#\n\n\n\n\n\n10.2.2 离散型 例 2\n\nx <- sample(LETTERS,13); y <- 1:13\nx\n\n [1] \"L\" \"N\" \"H\" \"V\" \"M\" \"Z\" \"D\" \"W\" \"E\" \"K\" \"B\" \"Q\" \"G\"\n\n\n\ny\n\n [1]  1  2  3  4  5  6  7  8  9 10 11 12 13\n\n\n\np<-ggplot()+geom_col(data=NULL,aes(x,y,fill=x));p\n\n\n\n\n\np+scale_fill_brewer()\n\nWarning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Blues is 9\nReturning the palette you asked for with that many colors\n\n\n\n\n\n\np+scale_fill_brewer(palette=\"YlOrRd\")\n\nWarning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette YlOrRd is 9\nReturning the palette you asked for with that many colors\n\n\n\n\n\n\nx<-x[1:8];y<-y[1:8]\nx\n\n[1] \"L\" \"N\" \"H\" \"V\" \"M\" \"Z\" \"D\" \"W\"\n\n\n\ny\n\n[1] 1 2 3 4 5 6 7 8\n\n\n\np<-ggplot()+geom_col(data=NULL,aes(x,y,fill=x));p\n\n\n\n\n\np+scale_fill_brewer()\n\n\n\n\n\np+scale_fill_brewer(palette=\"YlOrRd\")\n\n\n\n\n\n10.2.3 连续型 例 1\n\np1<-ggplot(mpg,aes(displ, hwy , color = cyl))+geom_point();p1\n\n\n\n\n\np1 + scale_color_gradient2(low = \"white\", mid = \"red\", high = \"black\") \n\n\n\n\n\np1 + scale_color_gradientn(colours = terrain.colors(10))\n\n\n\n\n\np1 + scale_color_distiller(palette = \"Spectral\")\n\n\n\n\n\n10.2.4 连续型 例 2\n\np<-ggplot(faithfuld, aes(waiting, eruptions)) + geom_raster(aes(fill = density));p\n\n\n\n\n\nmax(faithfuld$density);min(faithfuld$density)  \n\n[1] 0.0369878\n\n\n[1] 1.25925e-24\n\n\n\np + scale_fill_gradient(limits=c(0.001,0.004))   \n\n\n\n\n\np + scale_fill_gradient(low = 'blue', high = 'red')\n\n\n\n\n\np + scale_fill_gradient2(low = 'blue', high = 'red')  \n\n\n\n\n\np + scale_fill_gradient2(low = 'blue', high = 'red', midpoint = 0.02)\n\n\n\n\n\np + scale_fill_gradientn(colours = c('black','blue','red','white'))  \n\n\n\n\n\np + scale_fill_gradientn(colours = topo.colors(10))  \n\n\n\n\n\np + scale_fill_gradientn(colours = terrain.colors(10))  \n\n\n\n\n\np + scale_fill_gradientn(colours = heat.colors(10))\n\n\n\n\n\np + scale_fill_gradientn(colours = cm.colors(10))\n\n\n\n\n\np + scale_fill_distiller(palette = \"Spectral\")"
+  },
+  {
+    "objectID": "adv_scale.html#scale_color_identity",
+    "href": "adv_scale.html#scale_color_identity",
+    "title": "\n10  scale()\n",
+    "section": "\n10.3 scale_color_identity()",
+    "text": "10.3 scale_color_identity()\n\npp1<-ggplot(mpg,aes(displ, hwy , color = \"blue\"))+geom_point();pp1\n\n\n\n\n\npp1+scale_color_identity( )\n\n\n\n\n\ncol <- c(\"red\",\"yellow\",\"blue\",\"black\")\nval <- abs(rnorm(4))*10;val\n\n[1]  7.497713  5.036814 14.489637  7.368140\n\n\n\ndata<-data.frame(\"col\"=col,\"val\"=val)\ndata\n\n     col       val\n1    red  7.497713\n2 yellow  5.036814\n3   blue 14.489637\n4  black  7.368140\n\n\n\npp2<-ggplot(data,aes(x=col,y=val,fill=col))+geom_col();pp2\n\n\n\n\n\npp2+scale_fill_identity()"
+  },
+  {
+    "objectID": "adv_scale.html#scale_shape_",
+    "href": "adv_scale.html#scale_shape_",
+    "title": "\n10  scale()\n",
+    "section": "\n10.4 scale_shape_**()",
+    "text": "10.4 scale_shape_**()\n\ndf_shapes <- data.frame(shape = 0:24)\ndf_shapes\n\n   shape\n1      0\n2      1\n3      2\n4      3\n5      4\n6      5\n7      6\n8      7\n9      8\n10     9\n11    10\n12    11\n13    12\n14    13\n15    14\n16    15\n17    16\n18    17\n19    18\n20    19\n21    20\n22    21\n23    22\n24    23\n25    24\n\n\n\nggplot(df_shapes, aes(0, 0, shape = shape)) +\n  geom_point(aes(shape = shape), size = 5, fill = 'red') +\n  scale_shape_identity() +\n  facet_wrap(~shape)\n\n\n\n\n\np<-ggplot(mpg)+\n   geom_point(aes(cty, hwy, shape = manufacturer));p\n\nWarning: The shape palette can deal with a maximum of 6 discrete values because\nmore than 6 becomes difficult to discriminate; you have 15. Consider\nspecifying shapes manually if you must have them.\n\n\nWarning: Removed 112 rows containing missing values (geom_point).\n\n\n\n\n\n\np+ scale_shape_manual(values=seq(1,15,1))"
+  },
+  {
+    "objectID": "adv_scale.html#scale_linetype_",
+    "href": "adv_scale.html#scale_linetype_",
+    "title": "\n10  scale()\n",
+    "section": "\n10.5 scale_linetype_**()",
+    "text": "10.5 scale_linetype_**()\n\ndf_lines <- data.frame(\n    linetype = factor(\n        1:4,\n        labels = c(\"solid\", \"longdash\", \"dashed\", \"dotted\")\n    )\n)\ndf_lines\n\n  linetype\n1    solid\n2 longdash\n3   dashed\n4   dotted\n\n\n\nggplot(df_lines) +\n    geom_hline(aes(linetype = linetype, yintercept = 0), size = 2) +\n    scale_linetype_identity() +\n    facet_grid(linetype ~ .) \n\n\n\n\n\ndf_lines <- data.frame(\n    linetype = factor(\n        1:13,\n        labels = as.character(seq(0,12,1))\n    )\n)\nggplot(df_lines) +\n    geom_hline(aes(linetype = linetype, yintercept = 0), size = 2) +\n    facet_grid(linetype ~ .)"
+  },
+  {
+    "objectID": "adv_scale.html#scale_size_",
+    "href": "adv_scale.html#scale_size_",
+    "title": "\n10  scale()\n",
+    "section": "\n10.6 scale_size_**()",
+    "text": "10.6 scale_size_**()\n\np<-ggplot(mpg)+\n   geom_point(aes(displ, hwy, size = hwy),alpha=0.2);p\n\n\n\n\n\np+ scale_size()\n\n\n\n\n\np+scale_size(range=c(0,10))\n\n\n\n\n\np+scale_size_area(max_size=10)\n\n\n\n\n\np+scale_radius(range=c(0,10))"
+  },
+  {
+    "objectID": "adv_guide.html",
+    "href": "adv_guide.html",
+    "title": "\n11  guides()\n",
+    "section": "",
+    "text": "guides(); guide_colorbar(); guide_legend()"
+  },
+  {
+    "objectID": "adv_guide.html#scale__-vs-guides",
+    "href": "adv_guide.html#scale__-vs-guides",
+    "title": "\n11  guides()\n",
+    "section": "\n11.1 scale_*_* VS guides()",
+    "text": "11.1 scale_*_* VS guides()\n\ndf <- reshape2::melt(outer(1:4, 1:4), varnames = c(\"X1\", \"X2\"))\np1 <- ggplot(df, aes(X1, X2)) + geom_tile(aes(fill = value));p1\n\n\n\n\n\np1 + scale_fill_continuous(guide = \"legend\")\n\n\n\n\n\np1 + scale_fill_continuous(guide = guide_legend())\n\n\n\n\n\np1 + scale_fill_continuous(guide = guide_legend(title=NULL))\n\n\n\n\n\np1+guides(fill = \"legend\")\n\n\n\n\n\np1+guides(fill = guide_legend())\n\n\n\n\n\np1+guides(fill = guide_colorbar(title = NULL))\n\n\n\n\n\np2<-p1 + guides(fill =  guide_legend( title = \"LEFT\", \n                                  title.position = \"left\",\n                                  title.theme = element_text( size = 15,\n                                                              face = \"italic\",\n                                                              colour = \"red\",\n                                                              angle = 0\n                                                            ),\n                                  label.position = \"bottom\",\n                                  label.hjust = 0.5,\n                                  label.vjust = 1,\n                                  label.theme = element_text(angle = 90),\n                                  direction = \"horizontal\",\n                                  keywidth = 3, \n                                  keyheight = 1,\n                                  nrow=2,\n                                  byrow=TRUE\n                               )\n            );p2\n\n\n\n\n\np3<-p1 + guides(fill =  guide_colorbar( title = \"LEFT\", \n                                  title.position = \"left\",\n                                  title.theme = element_text( size = 15,\n                                                              face = \"italic\",\n                                                              colour = \"red\",\n                                                              angle = 0\n                                                            ),\n                                  label.position = \"bottom\",\n                                  label.hjust = 0.5,\n                                  label.vjust = 1,\n                                  label.theme = element_text(angle = 90),\n                                  direction = \"horizontal\",\n                                  barwidth = 10, barheight = 10,\n                                  nbin = 100,\n                                  draw.ulim = FALSE, \n                                  draw.llim = FALSE,\n                                  ticks=TRUE\n                                  )\n            );p3\n\n\n\n\n\np2+theme(legend.position=\"top\")\n\n\n\n\n\np3+theme(legend.position = c(0.3,0.5))"
+  },
+  {
+    "objectID": "adv_guide.html#colorbar-vs-legend",
+    "href": "adv_guide.html#colorbar-vs-legend",
+    "title": "\n11  guides()\n",
+    "section": "\n11.2 colorbar VS legend",
+    "text": "11.2 colorbar VS legend\n\nmydata <- data.frame(  x = runif(100,0,100),  \n                        y = runif(100,0,100),  \n                        z = runif(100,0,100),  \n                        f = runif(100,0,100),  \n                        g = rep(LETTERS[1:5],each = 20))\np <- ggplot(mydata,aes(x,y))+  geom_point(aes(fill = z,size = f ),shape = 21);p\n\n\n\n\n\ncolorbar = guide_colorbar(  title = 'Colorbar',  \n                            title.position = 'left',  #left,right,top,bottom  \n                            title.theme = element_text(size = 15,face = \"italic\",colour = \"red\",angle = 45),  \n                            title.hjust =  .5,  \n                            title.vjust =  0,  \n                            label = TRUE,  \n                            label.position = 'top',  \n                            label.theme = element_text(size = 15,face = \"italic\",colour = \"red\",angle = 45),  \n                            label.hjust = .5,  \n                            label.vjust = .5,  \n                            barwidth = unit(6,\"cm\"),  #Default value is legend.key.width or legend.key.size  \n                            barheight = unit(1.2,\"cm\"),  #Default value is legend.key.height or legend.key.size  \n                            nbin = 20,  \n                            ticks = TRUE,  \n                            draw.ulim = TRUE,  \n                            draw.llim = TRUE,  \n                            direction = \"horizontal\",  #\"horizontal\" or \"vertical.\"  \n                            reverse = TRUE,  \n                            order = 1)\nsize_legend = guide_legend(  title = 'legend',  \n                             title.position = \"left\",  \n                             title.hjust =  .5,  \n                             title.vjust = .5,  \n                             title.theme = element_text(size = 15,face = \"italic\",colour = \"red\",angle = 45),  \n                             keywidth = 2.5,  \n                             keyheight = 2,  \n                             label.position = \"bottom\",  \n                             direction = \"horizontal\",  \n                             label = TRUE,  \n                             label.hjust = 0.5,  \n                             label.vjust = 0.5,  \n                             label.theme = element_text(size = 15,face = \"italic\",colour = \"red\",angle = 45),  \n                             nrow = 2,  \n                             byrow = TRUE,  \n                             reverse = TRUE,  \n                             order = 2)\np + scale_fill_gradient(breaks = seq(0,100,10)) +  \n    scale_size_area(breaks = seq(0,100,10))  +  \n    guides(fill = colorbar,size = size_legend)\n\n\n\n\n\np+scale_fill_gradient(breaks=seq(0,100,10),guide=colorbar)+\n  scale_size_area(breaks = seq(0,100,10),guide=size_legend)"
+  },
+  {
+    "objectID": "adv_guide.html#删除图例",
+    "href": "adv_guide.html#删除图例",
+    "title": "\n11  guides()\n",
+    "section": "\n11.3 删除图例",
+    "text": "11.3 删除图例\n\nggplot(mpg)+\n  geom_point(aes(cty, \n                 hwy, \n                 shape = manufacturer))+\n  scale_shape_manual(values=seq(0,15,1),\n                     guide=FALSE)\n\nWarning: It is deprecated to specify `guide = FALSE` to remove a guide. Please\nuse `guide = \"none\"` instead.\n\n\n\n\n\n\nggplot(mpg)+\n  geom_point(aes(cty, \n                 hwy, \n                 shape = manufacturer))+\n  scale_shape_manual(values=seq(0,15,1),\n                     guide=\"none\")\n\n\n\n\n\nggplot(mpg)+\n  geom_point(aes(cty, \n                 hwy, \n                 color = manufacturer))+\n  #guides(color=FALSE)+\n  scale_color_discrete(guide=FALSE)\n\nWarning: It is deprecated to specify `guide = FALSE` to remove a guide. Please\nuse `guide = \"none\"` instead."
+  },
+  {
+    "objectID": "adv_theme.html",
+    "href": "adv_theme.html",
+    "title": "\n14  theme()\n",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.3.6      ✔ purrr   0.3.5 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.3      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n\nlibrary(ggthemr)\nlibrary(ggthemes)\nlibrary(ggsci)\nlibrary(ggpubr)\n\n\nAttaching package: 'ggpubr'\n\nThe following objects are masked from 'package:ggthemr':\n\n    rotate_x_text, rotate_y_text\n\n\n\np<-ggplot(mpg, aes(class,color=drv,fill=drv)) +geom_bar() \np+theme_grey()\n\n\n\n\n\np+theme_bw()\n\n\n\n\n\np+theme_linedraw()\n\n\n\n\n\np+theme_light()\n\n\n\n\n\np+theme_dark()\n\n\n\n\n\np+theme_minimal()\n\n\n\n\n\np+theme_classic()"
+  },
+  {
+    "objectID": "adv_theme.html#ggthemes",
+    "href": "adv_theme.html#ggthemes",
+    "title": "\n14  theme()\n",
+    "section": "\n14.2 ggthemes",
+    "text": "14.2 ggthemes\n\np<-ggplot(mpg, aes(class,color=drv,fill=drv)) +geom_bar() \np+theme_base()\n\n\n\n\n\np+theme_calc()\n\n\n\n\n\np+theme_economist()\n\n\n\n\n\np+theme_excel()\n\n\n\n\n\np+theme_few()\n\n\n\n\n\np+theme_fivethirtyeight()\n\n\n\n\n\np+theme_gdocs()\n\n\n\n\n\np+theme_hc()\n\n\n\n\n\np+theme_par()\n\n\n\n\n\np+theme_pander()\n\n\n\n\n\np+theme_solarized()\n\n\n\n\n\np+theme_stata()\n\n\n\n\n\np+theme_tufte()\n\n\n\n\n\np+theme_wsj()"
+  },
+  {
+    "objectID": "adv_theme.html#ggthemr",
+    "href": "adv_theme.html#ggthemr",
+    "title": "\n14  theme()\n",
+    "section": "\n14.3 ggthemr",
+    "text": "14.3 ggthemr\n\nremotes::install_github(‘Mikata-Project/ggthemr’)\n\n\nggthemr('flat')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('flat dark')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('camouflage')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('chalk')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('copper')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('dust')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('earth')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('fresh')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('grape')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('grass')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('greyscale')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('light')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('lilac')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('pale')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('sea')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('sky')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()\n\n\nggthemr('solarized')\nggplot(mpg, aes(class,color=drv)) +geom_bar()\n\n\n\nggthemr_reset()"
+  },
+  {
+    "objectID": "adv_theme.html#ggsci",
+    "href": "adv_theme.html#ggsci",
+    "title": "\n14  theme()\n",
+    "section": "\n14.4 ggsci",
+    "text": "14.4 ggsci\n\n详见：https://nanx.me/ggsci/articles/ggsci.html\n\n\ndata(\"diamonds\")\np1 = ggplot(subset(diamonds, carat >= 2.2),\n       aes(x = table, y = price, colour = cut)) +\n  geom_point(alpha = 0.7) +\n  geom_smooth(method = \"loess\", alpha = 0.05, size = 1, span = 1) +\n  theme_bw()\np1+scale_color_npg()\n\n`geom_smooth()` using formula 'y ~ x'"
+  },
+  {
+    "objectID": "adv_theme.html#元素调整函数",
+    "href": "adv_theme.html#元素调整函数",
+    "title": "\n14  theme()\n",
+    "section": "\n14.5 元素调整函数",
+    "text": "14.5 元素调整函数\n\nplot <- ggplot(mpg, aes(displ, hwy)) + geom_point()\nplot + theme(\n  panel.background = element_blank(),\n  axis.text = element_text(colour = \"red\"),\n  axis.line = element_line(arrow = arrow()),\n  plot.background = element_rect(fill = \"white\")\n)"
+  },
+  {
+    "objectID": "adv_theme.html#主题中其它元素调整",
+    "href": "adv_theme.html#主题中其它元素调整",
+    "title": "\n14  theme()\n",
+    "section": "\n14.6 主题中其它元素调整",
+    "text": "14.6 主题中其它元素调整\n\np<-ggplot(mpg,aes(drv, fill = class)) + geom_bar()\np+theme(legend.justification=c(\"right\", \"top\"))\n\n\n\n\n\np+theme(legend.box.background = element_rect(),\n        legend.box.margin = margin(6, 6, 6, 6))\n\n\n\n\n\np+theme(legend.key = element_rect(fill = \"white\",colour = \"black\",\n                                  size=0.8,linetype=3))\n\n\n\n\n\np+theme(legend.position=c(0.9,0.8))"
+  },
+  {
+    "objectID": "adv_theme.html#ggpubr",
+    "href": "adv_theme.html#ggpubr",
+    "title": "\n14  theme()\n",
+    "section": "\n14.7 ggpubr",
+    "text": "14.7 ggpubr\n\nhttp://www.alboukadel.com/\n\n\n14.7.1 模拟数据\n\nset.seed(1234) \nwdata <- data.frame(\nsex = factor(rep(c(\"F\", \"M\"), each=200)), \nweight = c(rnorm(200, 55), rnorm(200, 58)))\n\n\n14.7.2 ggdensity\n\nggdensity(wdata, x = \"weight\", add = \"mean\", rug = TRUE, \n          color = \"sex\", fill = \"sex\", palette = c(\"#00AFBB\", \"#E7B800\"))\n\n\n\n\n\n14.7.3 gghistogram\n\ngghistogram(wdata, x = \"weight\", add = \"mean\", rug = TRUE, \n            color = \"sex\", fill = \"sex\", palette = c(\"#00AFBB\", \"#E7B800\"))\n\nWarning: Using `bins = 30` by default. Pick better value with the argument\n`bins`.\n\n\n\n\n\n\n14.7.4 gghistogram\n\ngghistogram(wdata, x = \"weight\", add = \"mean\", rug = TRUE, \n            fill = \"sex\", palette = c(\"#00AFBB\", \"#E7B800\"), \n            add_density = TRUE)\n\nWarning: Using `bins = 30` by default. Pick better value with the argument\n`bins`.\n\n\n\n\n\n\n14.7.5 ggbarplot\n\nggbarplot(ToothGrowth, x = \"dose\", y = \"len\", add = \"mean_se\", \n          label = TRUE, lab.vjust = -1.9)\n\n\n\nggbarplot(ToothGrowth, x = \"dose\", y = \"len\", add = \"mean_se\",\n          error.plot = \"upper_errorbar\")\n\n\n\nggbarplot(ToothGrowth, x = \"dose\", y = \"len\", add = c(\"mean_se\", \"dotplot\"))\n\nBin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.\n\n\n\n\n\n\ndata(\"mtcars\") \ndf2 <- mtcars \ndf2$cyl <- factor(df2$cyl) \ndf2$name <- rownames(df2)\nggbarplot(df2, x=\"name\", y=\"mpg\", fill = \"cyl\", \n          color = \"white\", palette = \"jco\", sort.val = \"desc\",\n          sort.by.groups=FALSE,x.text.angle=60)\n\n\n\n\n\ndf2$mpg_z <- (df2$mpg-mean(df2$mpg))/sd(df2$mpg)\ndf2$mpg_grp <- factor(ifelse(df2$mpg_z<0, \"low\", \"high\"), levels = c(\"low\", \"high\"))\nggbarplot(df2, x=\"name\", y=\"mpg_z\", fill = \"mpg_grp\", \n          color = \"white\", palette = \"jco\", sort.val = \"asc\", \n          sort.by.groups = FALSE, x.text.angle=60, ylab = \"MPG z-score\", \n          xlab = FALSE, legend.title=\"MPG Group\")\n\n\n\n\n\nggbarplot(df2, x=\"name\", y=\"mpg_z\", fill = \"mpg_grp\", \n          color = \"white\", palette = \"jco\", sort.val = \"desc\", \n          sort.by.groups = FALSE, x.text.angle=90, ylab = \"MPG z-score\", \n          xlab = FALSE, legend.title=\"MPG Group\", \n          rotate=TRUE, ggtheme = theme_minimal())\n\n\n\n\n\n14.7.6 ggboxplot\n\nggboxplot(ToothGrowth, x=\"dose\", y=\"len\", color = \"dose\", \n          palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n          add = \"jitter\", shape=\"dose\")\n\n\n\n\n\ndf<-ToothGrowth\n\nggboxplot(df, x = \"dose\", y = \"len\", width = 0.8)\n\n\n\nggboxplot(df, \"dose\", \"len\", orientation = \"horizontal\")\n\n\n\nggboxplot(df, x = \"dose\", y = \"len\", notch = TRUE)\n\n\n\nggboxplot(df, x = \"dose\", y = \"len\", add = \"dotplot\")\n\nBin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.\n\n\n\n\n\n\nmy_comparisons <- list( c(\"0.5\", \"1\"), c(\"1\", \"2\"), c(\"0.5\", \"2\") ) \nggboxplot(ToothGrowth, x = \"dose\", y = \"len\", color = \"dose\")+\n  stat_compare_means(comparisons = my_comparisons, \n                     label.y = c(29, 35, 40))+ \n  stat_compare_means(label.y = 45)\n\nWarning in wilcox.test.default(c(4.2, 11.5, 7.3, 5.8, 6.4, 10, 11.2, 11.2, :\ncannot compute exact p-value with ties\n\n\nWarning in wilcox.test.default(c(4.2, 11.5, 7.3, 5.8, 6.4, 10, 11.2, 11.2, :\ncannot compute exact p-value with ties\n\n\nWarning in wilcox.test.default(c(16.5, 16.5, 15.2, 17.3, 22.5, 17.3, 13.6, :\ncannot compute exact p-value with ties\n\n\n\n\n\n\n14.7.7 ggpie\n\ndf <- data.frame(group = c(\"Male\", \"Female\", \"Child\"), \n                 value = c(25, 25, 50))\nlabs <- paste0(df$group, \" (\", df$value, \"%)\")\nggpie(df, \"value\", label = labs, fill = \"group\", \n      color = \"white\", palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"))\n\n\n\nggpie(df, \"value\", label = labs, lab.pos = \"in\", \n      lab.font = \"white\", fill = \"group\", color = \"white\", \n      palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"))\n\n\n\n\n\n14.7.8 ggscatter\n\ndata(\"mtcars\") \ndf <- mtcars; df$cyl <- as.factor(df$cyl)\nggscatter(df, x = \"wt\", y = \"mpg\", color = \"cyl\", \n          add = \"reg.line\", conf.int = TRUE)+\n  stat_cor(aes(color = cyl), label.x = 3)\n\n`geom_smooth()` using formula 'y ~ x'\n\n\n\n\n\n\nggscatter(df, x = \"wt\", y = \"mpg\", color = \"cyl\", shape = \"cyl\", \n          palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n          ellipse = TRUE, mean.point = TRUE, star.plot = TRUE)\n\n\n\n\n\n14.7.9 ggpaired\n\nggpaired(ToothGrowth, x = \"supp\", y = \"len\", color = \"supp\", \n         line.color = \"gray\", line.size = 0.4)\n\n\n\n\n\nggpaired(ToothGrowth, x = \"supp\", y = \"len\", color = \"supp\", \n         line.color = \"gray\", line.size = 0.4)+ \n  stat_compare_means(paired = TRUE)\n\n\n\n\n\n14.7.10 ggviolin\n\nggviolin(ToothGrowth, x=\"dose\", y=\"len\", fill = \"dose\", \n         palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n         add = \"boxplot\", add.params = list(fill=\"white\"))+ \n  stat_compare_means(comparisons = my_comparisons, label = \"p.signif\")+\n  stat_compare_means(label.y = 50)\n\nWarning in wilcox.test.default(c(4.2, 11.5, 7.3, 5.8, 6.4, 10, 11.2, 11.2, :\ncannot compute exact p-value with ties\n\n\nWarning in wilcox.test.default(c(4.2, 11.5, 7.3, 5.8, 6.4, 10, 11.2, 11.2, :\ncannot compute exact p-value with ties\n\n\nWarning in wilcox.test.default(c(16.5, 16.5, 15.2, 17.3, 22.5, 17.3, 13.6, :\ncannot compute exact p-value with ties\n\n\n\n\n\n\n14.7.11 ggdotchart\n\nggdotchart(df2, x=\"name\", y=\"mpg\", color = \"cyl\", \n           palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n           sorting = \"ascending\", add = \"segments\", ggtheme = theme_pubr())\n\n\n\n\n\nggdotchart(df2, x=\"name\", y=\"mpg\", color = \"cyl\", \n           palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n           sorting = \"descending\", add = \"segments\", rotate = TRUE, \n           group = \"cyl\", dot.size = 6, label = round(df2$mpg), \n           font.label = list(color=\"white\", size=9, vjust=0.5), \n           ggtheme = theme_pubr())\n\n\n\n\n\nggdotchart(df2, x = \"name\", y = \"mpg_z\",  color = \"cyl\",     \n           palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n           sorting = \"descending\",  add = \"segments\", \n           add.params = list(color = \"lightgray\", size = 2), \n           group = \"cyl\", dot.size = 6,                                 \n           label = round(df2$mpg_z,1),                        \n           font.label = list(color = \"white\", size = 9, \n                             vjust = 0.5),               \n           ggtheme = theme_pubr())+\n  geom_hline(yintercept = 0, linetype = 2, color = \"lightgray\")\n\n\n\n\n\nggdotchart(df2, x=\"name\", y=\"mpg\", color = \"cyl\", \n           palette = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\"), \n           sorting = \"descending\", rotate = TRUE, dot.size = 2, y.text.col=TRUE, \n           ggtheme = theme_pubr())+ \n  theme_cleveland()\n\nWarning: Vectorized input to `element_text()` is not officially supported.\nResults may be unexpected or may change in future versions of ggplot2."
   }
 ]

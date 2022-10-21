@@ -43,6 +43,13 @@ ggplot(mpg,aes(displ, hwy , color = cyl)) +
 ```{r}
 ggplot(mpg,aes(displ, hwy , color = cyl)) + 
   geom_point()+
+  geom_text(aes(label=manufacturer),color="red")
+```
+
+
+```{r}
+ggplot(mpg,aes(displ, hwy , color = cyl)) + 
+  geom_point()+
   geom_text(x=4,y=40,label="TEST",color="red",alpha=0.1)
 ```
 

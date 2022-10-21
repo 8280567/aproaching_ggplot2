@@ -206,7 +206,7 @@ ggthemr_reset()
 
 ## ggsci
 
-> 详见：https://ggsci.net/articles/ggsci.html
+> 详见：https://nanx.me/ggsci/articles/ggsci.html
 
 ```{r}
 data("diamonds")
@@ -329,7 +329,6 @@ ggbarplot(df2, x="name", y="mpg_z", fill = "mpg_grp",
           xlab = FALSE, legend.title="MPG Group", 
           rotate=TRUE, ggtheme = theme_minimal())
 ```
-
 
 ### ggboxplot
 
@@ -457,14 +456,3 @@ ggdotchart(df2, x="name", y="mpg", color = "cyl",
   theme_cleveland()
 
 ```
-
-
-
-
-
-
-
-
-
-
-

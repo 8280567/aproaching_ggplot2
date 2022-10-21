@@ -5,6 +5,7 @@ library(tidyverse)
 ```
 
 ## 数据准备
+
 ```{r}
 set.seed(123)                 #设定随机种子，保证做的图和这里的一样#
 df <- data.frame(
@@ -183,25 +184,3 @@ ggplot(df1,aes(item,value,colour=item))+
 ggplot(df1,aes(value))+
   geom_histogram(bins=10,colour="white")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

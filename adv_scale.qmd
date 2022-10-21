@@ -1,7 +1,8 @@
 ## scale()
 
 ## 公共参数
->公共参数name,breaks,labels,limits
+
+> 公共参数name,breaks,labels,limits
 
 ### 离散型 例 1
 
@@ -17,6 +18,15 @@ p0 <- ggplot(mpg, aes(class))+geom_bar(aes(fill=drv));p0
 #更改图例名字 #
 p0 + scale_fill_discrete(name="class") 
 ```
+
+
+```{r}
+p0+ geom_bar(aes(fill=drv))+
+   scale_x_discrete(name="CLASS")+
+   scale_fill_discrete(name="Driver")
+```
+
+
 
 ```{r}
 # 对应指定并更改图例标签 #
@@ -43,6 +53,7 @@ p1 <- ggplot(mtcars, aes(factor(cyl), mpg)) + geom_point();p1
 ```{r}
 p1 + scale_x_discrete(name="cyl") 
 ```
+
 
 ```{r}
 p1 + scale_x_discrete(labels = c("4"="a","6"="b","8"="c")) 
@@ -120,7 +131,8 @@ p3 + scale_y_sqrt()
 ```
 
 ## 更改颜色
->更改color/fill
+
+> 更改color/fill
 
 ### 离散型 例 1
 
@@ -284,7 +296,7 @@ pp2<-ggplot(data,aes(x=col,y=val,fill=col))+geom_col();pp2
 pp2+scale_fill_identity()
 ```
 
-## scale_shape_**()
+## scale_shape\_\*\*()
 
 ```{r}
 df_shapes <- data.frame(shape = 0:24)
@@ -307,7 +319,7 @@ p<-ggplot(mpg)+
 p+ scale_shape_manual(values=seq(1,15,1))
 ```
 
-## scale_linetype_**()
+## scale_linetype\_\*\*()
 
 ```{r}
 df_lines <- data.frame(
@@ -338,7 +350,7 @@ ggplot(df_lines) +
     facet_grid(linetype ~ .) 
 ```
 
-## scale_size_**()
+## scale_size\_\*\*()
 
 ```{r}
 p<-ggplot(mpg)+
@@ -360,62 +372,3 @@ p+scale_size_area(max_size=10)
 ```{r}
 p+scale_radius(range=c(0,10))
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
